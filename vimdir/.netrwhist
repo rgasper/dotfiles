@@ -1,0 +1,6 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =4
+let g:netrw_dirhist_1='/Users/gasperr/git/analysis/CommonCrawl'
+let g:netrw_dirhist_2='/Users/gasperr/git/phoneDirect/.git'
+let g:netrw_dirhist_3='/Users/gasperr/git/predicttvscore/.git'
+let g:netrw_dirhist_4='/Users/gasperr/git/phonedirectmodel'

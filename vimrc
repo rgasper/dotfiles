@@ -1,4 +1,5 @@
 " have to install vim-plug https://github.com/junegunn/vim-plug
+" then follow startup directions for vim-plug
 call plug#begin('~/.vim/plugged')
 Plug 'Yggdroot/indentLine'
 call plug#end()
