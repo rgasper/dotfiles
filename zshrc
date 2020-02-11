@@ -65,6 +65,9 @@ ZSH_THEME="robbyrussell"
 plugins=(
   git
   python
+  colored-man-pages
+  colorize
+  gitignore
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -129,3 +132,4 @@ fi
 
 alias mycli='mycli --ssl-ca ~/.mysql_ca.pem'
 alias todo='todo.sh'
+todo list
