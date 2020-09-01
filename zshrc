@@ -2,12 +2,12 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH="/Users/gasperr/.oh-my-zsh"
+export ZSH="/Users/raymondgasper/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
-# See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
+# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 ZSH_THEME="robbyrussell"
 
 # Set list of themes to pick from when loading at random
@@ -26,8 +26,14 @@ ZSH_THEME="robbyrussell"
 # Uncomment the following line to disable bi-weekly auto-update checks.
 # DISABLE_AUTO_UPDATE="true"
 
+# Uncomment the following line to automatically update without prompting.
+# DISABLE_UPDATE_PROMPT="true"
+
 # Uncomment the following line to change how often to auto-update (in days).
 # export UPDATE_ZSH_DAYS=13
+
+# Uncomment the following line if pasting URLs and other text is messed up.
+# DISABLE_MAGIC_FUNCTIONS=true
 
 # Uncomment the following line to disable colors in ls.
 # DISABLE_LS_COLORS="true"
@@ -63,16 +69,15 @@ ZSH_THEME="robbyrussell"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(
-  git
-  python
-  colored-man-pages
-  colorize
-  gitignore
+    git
+    gitignore
 )
 
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
+
+export TIMEFMT=$'\nreal\t%E\nuser\t%U \nsystem\t%S\nCPU\t%P\nMaxMem\t%M \nAvgMem\t%K'
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
@@ -80,56 +85,56 @@ source $ZSH/oh-my-zsh.sh
 # export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
+ if [[ -n $SSH_CONNECTION ]]; then
+   export EDITOR='vi'
+ else
+   export EDITOR='vi'
+ fi
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
-
-# ssh
-# export SSH_KEY_PATH="~/.ssh/rsa_id"
 
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
 # For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
-# added by Anaconda2 5.3.0 installer
-# >>> conda init >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$(CONDA_REPORT_ERRORS=false '/anaconda2/bin/conda' shell.bash hook 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    \eval "$__conda_setup"
-else
-    if [ -f "/anaconda2/etc/profile.d/conda.sh" ]; then
-        . "/anaconda2/etc/profile.d/conda.sh"
-        CONDA_CHANGEPS1=false conda activate base
-    else
-        \export PATH="/anaconda2/bin:${PATH}"
-    fi
-fi
-unset __conda_setup
-# <<< conda init <<<
 
-# Environment Variables
-export LIBMYSQL_ENABLE_CLEARTEXT_PLUGIN=1
+alias todo="todo.sh"
+alias vi="nvim"
+alias enko="cd ~/Projects/work/enko-teken"
+alias work="cd ~/Projects/work"
+alias personal="cd ~/Projects/personal"
+alias dnsFlush="sudo killall -HUP mDNSResponder"
+alias gstat="git status"
 
-#enable color formatting
+# anaconda
+source /usr/local/anaconda3/bin/activate
 
-# don't share history across tabs
-setopt no_share_history
-
-# to help finding compiler libraries - only add if not there
-if [[ ${DYLD_FALLBACK_LIBRARY_PATH} != *"/anaconda2/lib/:"* ]]; then
-    export DYLD_FALLBACK_LIBRARY_PATH="/anaconda2/lib/:${DYLD_FALLBACK_LIBRARY_PATH}"
-fi
-
-alias mycli='mycli --ssl-ca ~/.mysql_ca.pem'
-alias todo='todo.sh'
+# remind me of what I have to do
 todo list
+
+# aws autocomplete
+autoload bashcompinit && bashcompinit
+complete -C 'aws_completer' aws
+
+# dvc autocomplete
+autoload -Uz compinit
+compinit
+
+# color hints for tab completion
+# Case insensitive match
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+
+# Group matches and describe.
+zstyle ':completion:*:*:*:*:*' menu select
+zstyle ':completion:*:matches' group 'yes'
+zstyle ':completion:*:options' description 'yes'
+zstyle ':completion:*:options' auto-description '%d'
+zstyle ':completion:*:corrections' format ' %F{green}-- %d (errors: %e) --%f'
+zstyle ':completion:*:descriptions' format ' %F{yellow}-- %d --%f'
+zstyle ':completion:*:messages' format ' %F{purple} -- %d --%f'
+zstyle ':completion:*:warnings' format ' %F{red}-- no matches found --%f'
+zstyle ':completion:*:default' list-prompt '%S%M matches%s'
+zstyle ':completion:*' format ' %F{yellow}-- %d --%f'
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*' verbose yes
