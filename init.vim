@@ -30,22 +30,6 @@ function! StatusLineGit()
     return strlen(l:branchname) > 0?'  '.l:branchname.'  ':''
 endfunction
 
-set laststatus=2
-set statusline=
-set statusline+=%#PmenuSel#
-set statusline+=%{StatusLineGit()}
-set statusline+=%#LineNr#
-set statusline+=\ %f
-set statusline+=%m\
-set statusline+=%=
-set statusline+=%#CursorColumn#
-set statusline+=\ %y
-set statusline+=\ %{&fileencoding?&fileencoding:&encoding}
-set statusline+=\ [%{&fileformat}\]
-set statusline+=\ %p%%
-set statusline+=\ %l:%c
-set statusline+=\
-
 call plug#begin('~/.config/nvim/plugged')
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'mhinz/vim-startify'
@@ -54,6 +38,9 @@ Plug 'preservim/nerdcommenter'
 Plug 'tmhedberg/matchit'
 Plug 'sheerun/vim-polyglot'
 Plug 'Pocco81/AutoSave.nvim'
+Plug 'vim-airline/vim-airline'
+Plug 'chrisbra/csv.vim'
+Plug 'tpope/vim-fugitive'
 call plug#end()
 
 " open nerdtree by default on file open
@@ -65,6 +52,11 @@ augroup END
 let mapleader=','
 
 " CoC config
+
+" Add (Neo)Vim's native statusline support.
+" NOTE: Please see `:h coc-status` for integrations with external plugins that
+" provide custom statusline: lightline.vim, vim-airline.
+set statusline^=%{coc#status()}%{get(b:,'coc_current_function','')}
 
 " Set internal encoding of vim, not needed on neovim, since coc.nvim using some
 " unicode characters in the file autoload/float.vim
@@ -106,6 +98,17 @@ inoremap <silent><expr> <TAB>
       \ <SID>check_back_space() ? "\<TAB>" :
       \ coc#refresh()
 inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Use <c-space> to trigger completion.
+if has('nvim')
+  inoremap <silent><expr> <c-space> coc#refresh()
+else
+  inoremap <silent><expr> <c-@> coc#refresh()
+endif
 
 " Highlight the symbol and its references when holding the cursor.
 autocmd CursorHold * silent call CocActionAsync('highlight')
@@ -126,7 +129,7 @@ nmap <silent> gr <Plug>(coc-references-used)
 nmap <silent> gR :vsp<CR><Plug>(coc-references-used)<C-W>L
 
 " refactor symbol
-nmap <leader>rn <Plug>(coc-refactor)
+nmap <silent> rn <Plug>(coc-refactor)
 
 " Use K to show documentation in preview window.
 nnoremap <silent> doc :call <SID>show_documentation()<CR>
