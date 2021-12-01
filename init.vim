@@ -21,6 +21,12 @@ set cursorline " shows line cursor is on
 set scrolloff=5 " always show atleast five lines above/below the cursor
 set colorcolumn=120 " column 120 colored to show max width
 
+" filetype skeletons
+augroup skeletons
+  au!
+  autocmd BufNewFile *.* silent! execute '0r ~/.config/nvim/skeletons/skeleton.'.expand("<afile>:e")
+augroup END
+
 " status line
 function! GitBranch()
     return system("git rev-parse --abbrev-ref HEAD 2>/dev/null | tr -d '\n'")
