@@ -7,7 +7,7 @@ set softtabstop=4 " see multiple spaces as tabstops
 set shiftwidth=4 " width for autoindents
 set autoindent " indent new line same amount as previous line
 set copyindent " 
-set number " show line numbers
+set nu rnu " show hybrid line numbers
 set showcmd " 
 set backup " store backup files
 set noswapfile " disable swap file 
@@ -19,6 +19,7 @@ set wildmode=longest,list " bash-like autocompletions
 filetype plugin indent on " auto-indent depends on filetype and plugins
 set cursorline " shows line cursor is on
 set scrolloff=5 " always show atleast five lines above/below the cursor
+set colorcolumn=120 " column 120 colored to show max width
 
 " status line
 function! GitBranch()
@@ -41,6 +42,7 @@ Plug 'Pocco81/AutoSave.nvim'
 Plug 'vim-airline/vim-airline'
 Plug 'chrisbra/csv.vim'
 Plug 'tpope/vim-fugitive'
+Plug 'kdheepak/lazygit.nvim'
 call plug#end()
 
 " open nerdtree by default on file open
@@ -50,6 +52,8 @@ augroup nerdtree_open
 augroup END
 
 let mapleader=','
+
+nnoremap <silent> <leader>gg :LazyGit<CR>
 
 " CoC config
 
@@ -89,6 +93,16 @@ else
 endif
 
 " CoC commands
+
+vmap <leader>a <Plug>(coc-codeaction-selected)
+nmap <leader>a <Plug>(coc-codeaction-selected)
+
+" Formatting selected code.
+xmap <leader>f  <Plug>(coc-format-selected)
+nmap <leader>f  <Plug>(coc-format-selected)
+
+" Format whole buffer
+nmap <leader>F <Plug>(coc-format)
 
 " Use tab for trigger completion with characters ahead and navigate.
 " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
