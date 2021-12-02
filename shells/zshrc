@@ -106,12 +106,28 @@ alias work="cd ~/Projects/work"
 alias personal="cd ~/Projects/personal"
 alias dnsFlush="sudo killall -HUP mDNSResponder"
 alias gstat="git status"
+alias ga="git add"
+alias gps="git push"
+alias gpl="git pull"
+alias gcm="git commit -m"
+alias gs="git status"
+alias dcd="docker compose down"
+alias dcu="docker compose up"
+alias dcud="docker compose up -d"
+alias dce="docker compose exec"
+alias dclf="docker compose logs -f"
+alias dps="docker ps"
+alias lzd='lazydocker'
+alias gg='lazygit'
+
+# get to the chem ml box
+#alias chem-ml="ssh raymondgasper@$(~/Projects/work/enko-teken/bin/ec2-get-ip enko-personal-chem-ml)"
 
 # anaconda
 source /usr/local/anaconda3/bin/activate
 
 # remind me of what I have to do
-todo list
+# todo list
 
 # aws autocomplete
 autoload bashcompinit && bashcompinit
@@ -138,3 +154,19 @@ zstyle ':completion:*:default' list-prompt '%S%M matches%s'
 zstyle ':completion:*' format ' %F{yellow}-- %d --%f'
 zstyle ':completion:*' group-name ''
 zstyle ':completion:*' verbose yes
+
+source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# Added by serverless binary installer
+export PATH="$HOME/.serverless/bin:$PATH"
+
+test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
+# allow use of oracle cli tools
+export PATH=$PATH:/Applications/Oracle
+export ORACLE_HOME=/Applications/Oracle
+export DYLD_LIBRARY_PATH=/Applications/Oracle
+export TNS_ADMIN=/Applications/Oracle/network/admin
+export CLASSPATH=$CLASSPATH:$ORACLE_HOME
+export NLS_LANG="English_America.UTF8"
