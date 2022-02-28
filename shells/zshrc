@@ -99,6 +99,7 @@ export TIMEFMT=$'\nreal\t%E\nuser\t%U \nsystem\t%S\nCPU\t%P\nMaxMem\t%M \nAvgMem
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
 # For a full list of active aliases, run `alias`.
 
+alias safebash="curl https://raw.githubusercontent.com/rgasper/minimal_safe_bash_script/main/template.sh"
 alias todo="todo.sh"
 alias vi="nvim"
 alias enko="cd ~/Projects/work/enko-teken"
@@ -115,13 +116,13 @@ alias dcd="docker compose down"
 alias dcu="docker compose up"
 alias dcud="docker compose up -d"
 alias dce="docker compose exec"
+alias dcb="docker compose build"
+alias dcr="docker compose run"
 alias dclf="docker compose logs -f"
 alias dps="docker ps"
 alias lzd='lazydocker'
 alias gg='lazygit'
-
-# get to the chem ml box
-#alias chem-ml="ssh raymondgasper@$(~/Projects/work/enko-teken/bin/ec2-get-ip enko-personal-chem-ml)"
+alias ssh="kitty +kitten ssh"
 
 # anaconda
 source /usr/local/anaconda3/bin/activate
@@ -170,3 +171,6 @@ export DYLD_LIBRARY_PATH=/Applications/Oracle
 export TNS_ADMIN=/Applications/Oracle/network/admin
 export CLASSPATH=$CLASSPATH:$ORACLE_HOME
 export NLS_LANG="English_America.UTF8"
+
+# homebrew dont install the universe
+export HOMEBREW_NO_INSTALL_CLEANUP=true
