@@ -165,6 +165,7 @@ alias ga="git add"
 alias gps="git push"
 alias gpl="git pull"
 alias gcm="git commit -m"
+alias wip="git commit --no-verify -m"
 alias gco="git checkout" 
 alias gs="git status"
 alias dcd="docker compose down"
@@ -177,6 +178,8 @@ alias dclf="docker compose logs -f"
 alias dps="docker ps"
 alias lzd='lazydocker'
 alias gg='lazygit'
+alias la='ls -ltha'
+alias pip-py-lsp='pip install --upgrade pylsp-mypy pyls-isort python-lsp-black pyls-flake8 python-lsp-server python-lsp-black'
 
 # anaconda
 source /usr/local/anaconda3/bin/activate
@@ -227,4 +230,5 @@ export PATH="$HOME/.poetry/bin:$PATH"
 . /Users/raymondgasper/Library/z/z.sh # clone of https://github.com/rupa/z
 
 # activate thefuck
-eval $(thefuck --alias fuck)
+eval $(thefuck --alias f)
+function gi() { curl -sLw n https://www.toptal.com/developers/gitignore/api/$@ ;}
