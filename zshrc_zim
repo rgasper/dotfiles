@@ -166,8 +166,12 @@ alias gps="git push"
 alias gpl="git pull"
 alias gcm="git commit -m"
 alias wip="git commit --no-verify -m"
+alias wipa="git commit -a --no-verify -m"
 alias gco="git checkout" 
 alias gs="git status"
+alias gd="git diff"
+alias grom"git reset origin/main"
+alias gds="git diff --staged"
 alias dcd="docker compose down"
 alias dcu="docker compose up"
 alias dcud="docker compose up -d"
@@ -180,6 +184,7 @@ alias lzd='lazydocker'
 alias gg='lazygit'
 alias la='ls -ltha'
 alias pip-py-lsp='pip install --upgrade pylsp-mypy pyls-isort python-lsp-black pyls-flake8 python-lsp-server python-lsp-black'
+alias poetry-py-lsp='poetry add pylsp-mypy pyls-isort python-lsp-black pyls-flake8 python-lsp-server python-lsp-black'
 
 # anaconda
 source /usr/local/anaconda3/bin/activate
@@ -220,11 +225,12 @@ export TNS_ADMIN=/Applications/Oracle/network/admin
 export CLASSPATH=$CLASSPATH:$ORACLE_HOME
 export NLS_LANG="English_America.UTF8"
 
+
 # homebrew dont install the universe
 export HOMEBREW_NO_INSTALL_CLEANUP=true
 
 # add poetry to path
-export PATH="$HOME/.poetry/bin:$PATH"
+export PATH="/Users/raymondgasper/.local/bin:$PATH"
 
 # activate z
 . /Users/raymondgasper/Library/z/z.sh # clone of https://github.com/rupa/z
