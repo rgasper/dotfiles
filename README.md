@@ -6,4 +6,4 @@ Terminal things I like:
 - [zimfw](https://zimfw.sh/)
 - [zsh](https://www.zsh.org/)
 - [lazygit](https://github.com/jesseduffield/lazygit)
-- [neovim](https://neovim.io/)
+- [helix](https://helix-editor.com)
