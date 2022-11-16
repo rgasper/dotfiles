@@ -144,8 +144,10 @@ export TIMEFMT=$'\nreal\t%E\nuser\t%U \nsystem\t%S\nCPU\t%P\nMaxMem\t%M \nAvgMem
 
 # Preferred editor for local and remote sessions
  if [[ -n $SSH_CONNECTION ]]; then
-   export EDITOR='vi'
+   # null ssh connection - local 
+   export EDITOR='/usr/local/bin/hx'
  else
+   # not-null ssh connection - remote
    export EDITOR='vi'
  fi
 
@@ -185,6 +187,7 @@ alias gg='lazygit'
 alias la='ls -ltha'
 alias pip-py-lsp='pip install --upgrade pylsp-mypy pyls-isort python-lsp-black pyls-flake8 python-lsp-server python-lsp-black'
 alias poetry-py-lsp='poetry add pylsp-mypy pyls-isort python-lsp-black pyls-flake8 python-lsp-server python-lsp-black'
+alias icat="kitty +kitten icat"
 
 # anaconda
 source /usr/local/anaconda3/bin/activate

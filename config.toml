@@ -1,0 +1,26 @@
+theme = "dracula_ray"
+
+[editor]
+line-number = "absolute"
+mouse = true
+shell = ["zsh", "-c"]
+scrolloff = 10
+rulers = [120]
+cursorline = true
+color-modes = true
+
+[editor.indent-guides]
+render = true
+
+[editor.cursor-shape]
+insert = "bar"
+normal = "block"
+select = "block"
+
+[editor.file-picker]
+hidden = false
+git-ignore = true
+
+[editor.lsp]
+display-messages = true
+
