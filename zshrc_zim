@@ -240,4 +240,12 @@ export PATH="/Users/raymondgasper/.local/bin:$PATH"
 
 # activate thefuck
 eval $(thefuck --alias f)
+
+#######################
+# My Little Functions #
+#######################
+# gitignore curler
 function gi() { curl -sLw n https://www.toptal.com/developers/gitignore/api/$@ ;}
+# peek what's going on in a directory
+function peek() { ls -ltha "${1-.}" | head -n "${2-10}"; }
+
