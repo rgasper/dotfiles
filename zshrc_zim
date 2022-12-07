@@ -169,6 +169,8 @@ alias gpl="git pull"
 alias gcm="git commit -m"
 alias wip="git commit --no-verify -m"
 alias wipa="git commit -a --no-verify -m"
+alias grs="git restore"
+alias grss="git restore --staged"
 alias gco="git checkout" 
 alias gs="git status"
 alias gd="git diff"
@@ -188,7 +190,7 @@ alias la='ls -ltha'
 alias pip-py-lsp='pip install --upgrade pylsp-mypy pyls-isort python-lsp-black pyls-flake8 python-lsp-server python-lsp-black'
 alias poetry-py-lsp='poetry add pylsp-mypy pyls-isort python-lsp-black pyls-flake8 python-lsp-server python-lsp-black'
 alias icat="kitty +kitten icat"
-
+alias hg="kitty +kitten hyperlinked_grep"
 # anaconda
 source /usr/local/anaconda3/bin/activate
 
