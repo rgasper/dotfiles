@@ -1,13 +1,14 @@
-theme = "dracula_ray"
+theme = "gruvbox"
 
 [editor]
 line-number = "absolute"
 mouse = true
 shell = ["zsh", "-c"]
-scrolloff = 10
-rulers = [120]
+scrolloff = 20
+rulers = [121]
 cursorline = true
 color-modes = true
+bufferline = "always"
 
 [editor.indent-guides]
 render = true
