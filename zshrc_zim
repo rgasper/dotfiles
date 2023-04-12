@@ -144,11 +144,11 @@ export TIMEFMT=$'\nreal\t%E\nuser\t%U \nsystem\t%S\nCPU\t%P\nMaxMem\t%M \nAvgMem
 
 # Preferred editor for local and remote sessions
  if [[ -n $SSH_CONNECTION ]]; then
-   # null ssh connection - local 
-   export EDITOR='/usr/local/bin/hx'
- else
    # not-null ssh connection - remote
    export EDITOR='vi'
+ else
+   # null ssh connection - local 
+   export EDITOR='hx'
  fi
 
 # Compilation flags
@@ -165,6 +165,7 @@ alias vi="nvim"
 alias dnsFlush="sudo killall -HUP mDNSResponder"
 alias ga="git add"
 alias gps="git push"
+alias gpsr='git push --set-upstream origin $(git rev-parse --abbrev-ref HEAD | tr -d "[:space:]")'
 alias gpl="git pull"
 alias gcm="git commit -m"
 alias wip="git commit --no-verify -m"
@@ -237,11 +238,11 @@ export HOMEBREW_NO_INSTALL_CLEANUP=true
 # add poetry to path
 export PATH="/Users/raymondgasper/.local/bin:$PATH"
 
+# use helix as default editor
+# export EDITOR=hx  # not ready yet, see #2111
+
 # activate z
 . /Users/raymondgasper/Library/z/z.sh # clone of https://github.com/rupa/z
-
-# activate thefuck
-eval $(thefuck --alias f)
 
 #######################
 # My Little Functions #
