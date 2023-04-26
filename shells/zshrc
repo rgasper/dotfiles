@@ -1,81 +1,139 @@
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
+# Start configuration added by Zim install {{{
+#
+# User configuration sourced by interactive shells
+#
 
-# Path to your oh-my-zsh installation.
-export ZSH="/Users/raymondgasper/.oh-my-zsh"
+# -----------------
+# Zsh configuration
+# -----------------
 
-# Set name of the theme to load --- if set to "random", it will
-# load a random theme each time oh-my-zsh is loaded, in which case,
-# to know which specific one was loaded, run: echo $RANDOM_THEME
-# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="robbyrussell"
+#
+# History
+#
 
-# Set list of themes to pick from when loading at random
-# Setting this variable when ZSH_THEME=random will cause zsh to load
-# a theme from this variable instead of looking in ~/.oh-my-zsh/themes/
-# If set to an empty array, this variable will have no effect.
-# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
+# Remove older command from the history if a duplicate is to be added.
+setopt HIST_IGNORE_ALL_DUPS
 
-# Uncomment the following line to use case-sensitive completion.
-# CASE_SENSITIVE="true"
+#
+# Input/output
+#
 
-# Uncomment the following line to use hyphen-insensitive completion.
-# Case-sensitive completion must be off. _ and - will be interchangeable.
-# HYPHEN_INSENSITIVE="true"
+# Set editor default keymap to emacs (`-e`) or vi (`-v`)
+bindkey -e
 
-# Uncomment the following line to disable bi-weekly auto-update checks.
-# DISABLE_AUTO_UPDATE="true"
+# Prompt for spelling correction of commands.
+#setopt CORRECT
 
-# Uncomment the following line to automatically update without prompting.
-# DISABLE_UPDATE_PROMPT="true"
+# Customize spelling correction prompt.
+#SPROMPT='zsh: correct %F{red}%R%f to %F{green}%r%f [nyae]? '
 
-# Uncomment the following line to change how often to auto-update (in days).
-# export UPDATE_ZSH_DAYS=13
+# Remove path separator from WORDCHARS.
+WORDCHARS=${WORDCHARS//[\/]}
 
-# Uncomment the following line if pasting URLs and other text is messed up.
-# DISABLE_MAGIC_FUNCTIONS=true
+# -----------------
+# Zim configuration
+# -----------------
 
-# Uncomment the following line to disable colors in ls.
-# DISABLE_LS_COLORS="true"
+# Use degit instead of git as the default tool to install and update modules.
+## zstyle ':zim:zmodule' use 'degit'
 
-# Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
+# --------------------
+# Module configuration
+# --------------------
 
-# Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
+#
+# git
+#
 
-# Uncomment the following line to display red dots whilst waiting for completion.
-# COMPLETION_WAITING_DOTS="true"
+# Set a custom prefix for the generated aliases. The default prefix is 'G'.
+## zstyle ':zim:git' aliases-prefix 'g'
 
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
+#
+# input
+#
 
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
-# You can set one of the optional three formats:
-# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# or set a custom format using the strftime function format specifications,
-# see 'man strftime' for details.
-# HIST_STAMPS="mm/dd/yyyy"
+# Append `../` to your input for each `.` you type after an initial `..`
+## zstyle ':zim:input' double-dot-expand yes
 
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
+#
+# termtitle
+#
 
-# Which plugins would you like to load?
-# Standard plugins can be found in ~/.oh-my-zsh/plugins/*
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
-plugins=(
-    git
-    gitignore
-)
+# Set a custom terminal title format using prompt expansion escape sequences.
+# See http://zsh.sourceforge.net/Doc/Release/Prompt-Expansion.html#Simple-Prompt-Escapes
+# If none is provided, the default '%n@%m: %~' is used.
+## zstyle ':zim:termtitle' format '%1~'
 
-source $ZSH/oh-my-zsh.sh
+#
+# zsh-autosuggestions
+#
 
-# User configuration
+# Disable automatic widget re-binding on each precmd. This can be set when
+# zsh-users/zsh-autosuggestions is the last module in your ~/.zimrc.
+ZSH_AUTOSUGGEST_MANUAL_REBIND=1
+
+# Customize the style that the suggestions are shown with.
+# See https://github.com/zsh-users/zsh-autosuggestions/blob/master/README.md#suggestion-highlight-style
+#ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=242'
+
+#
+# zsh-syntax-highlighting
+#
+
+# Set what highlighters will be used.
+# See https://github.com/zsh-users/zsh-syntax-highlighting/blob/master/docs/highlighters.md
+ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
+
+# Customize the main highlighter styles.
+# See https://github.com/zsh-users/zsh-syntax-highlighting/blob/master/docs/highlighters/main.md#how-to-tweak-it
+#typeset -A ZSH_HIGHLIGHT_STYLES
+#ZSH_HIGHLIGHT_STYLES[comment]='fg=242'
+
+# ------------------
+# Initialize modules
+# ------------------
+
+ZIM_HOME=${ZDOTDIR:-${HOME}}/.zim
+# Download zimfw plugin manager if missing.
+if [[ ! -e ${ZIM_HOME}/zimfw.zsh ]]; then
+  if (( ${+commands[curl]} )); then
+    curl -fsSL --create-dirs -o ${ZIM_HOME}/zimfw.zsh \
+        https://github.com/zimfw/zimfw/releases/latest/download/zimfw.zsh
+  else
+    mkdir -p ${ZIM_HOME} && wget -nv -O ${ZIM_HOME}/zimfw.zsh \
+        https://github.com/zimfw/zimfw/releases/latest/download/zimfw.zsh
+  fi
+fi
+# Install missing modules, and update ${ZIM_HOME}/init.zsh if missing or outdated.
+if [[ ! ${ZIM_HOME}/init.zsh -nt ${ZDOTDIR:-${HOME}}/.zimrc ]]; then
+  source ${ZIM_HOME}/zimfw.zsh init -q
+fi
+# Initialize modules.
+source ${ZIM_HOME}/init.zsh
+
+# ------------------------------
+# Post-init module configuration
+# ------------------------------
+
+#
+# zsh-history-substring-search
+#
+
+zmodload -F zsh/terminfo +p:terminfo
+# Bind ^[[A/^[[B manually so up/down works both before and after zle-line-init
+for key ('^[[A' '^P' ${terminfo[kcuu1]}) bindkey ${key} history-substring-search-up
+for key ('^[[B' '^N' ${terminfo[kcud1]}) bindkey ${key} history-substring-search-down
+for key ('k') bindkey -M vicmd ${key} history-substring-search-up
+for key ('j') bindkey -M vicmd ${key} history-substring-search-down
+unset key
+# }}} End configuration added by Zim install
+
+
+
+# ------------------
+# User Configuration
+# ------------------
+
 
 export TIMEFMT=$'\nreal\t%E\nuser\t%U \nsystem\t%S\nCPU\t%P\nMaxMem\t%M \nAvgMem\t%K'
 
@@ -86,9 +144,11 @@ export TIMEFMT=$'\nreal\t%E\nuser\t%U \nsystem\t%S\nCPU\t%P\nMaxMem\t%M \nAvgMem
 
 # Preferred editor for local and remote sessions
  if [[ -n $SSH_CONNECTION ]]; then
+   # not-null ssh connection - remote
    export EDITOR='vi'
  else
-   export EDITOR='vi'
+   # null ssh connection - local 
+   export EDITOR='hx'
  fi
 
 # Compilation flags
@@ -102,16 +162,21 @@ export TIMEFMT=$'\nreal\t%E\nuser\t%U \nsystem\t%S\nCPU\t%P\nMaxMem\t%M \nAvgMem
 alias safebash="curl https://raw.githubusercontent.com/rgasper/minimal_safe_bash_script/main/template.sh"
 alias todo="todo.sh"
 alias vi="nvim"
-alias enko="cd ~/Projects/work/enko-teken"
-alias work="cd ~/Projects/work"
-alias personal="cd ~/Projects/personal"
 alias dnsFlush="sudo killall -HUP mDNSResponder"
-alias gstat="git status"
 alias ga="git add"
 alias gps="git push"
+alias gpsu='git push --set-upstream origin $(git rev-parse --abbrev-ref HEAD | tr -d "[:space:]")'
 alias gpl="git pull"
 alias gcm="git commit -m"
+alias wip="git commit --no-verify -m"
+alias wipa="git commit -a --no-verify -m"
+alias grs="git restore"
+alias grss="git restore --staged"
+alias gco="git checkout" 
 alias gs="git status"
+alias gd="git diff"
+alias grom"git reset origin/main"
+alias gds="git diff --staged"
 alias dcd="docker compose down"
 alias dcu="docker compose up"
 alias dcud="docker compose up -d"
@@ -122,45 +187,39 @@ alias dclf="docker compose logs -f"
 alias dps="docker ps"
 alias lzd='lazydocker'
 alias gg='lazygit'
-alias ssh="kitty +kitten ssh"
-
+alias la='ls -ltha'
+alias pip-py-lsp='pip install --upgrade pylsp-mypy pyls-isort python-lsp-black pyls-flake8 python-lsp-server python-lsp-black'
+alias poetry-py-lsp='poetry add pylsp-mypy pyls-isort python-lsp-black pyls-flake8 python-lsp-server python-lsp-black'
+alias icat="kitty +kitten icat"
+alias hg="kitty +kitten hyperlinked_grep"
 # anaconda
 source /usr/local/anaconda3/bin/activate
 
-# remind me of what I have to do
-# todo list
-
 # aws autocomplete
-autoload bashcompinit && bashcompinit
-complete -C 'aws_completer' aws
+# autoload bashcompinit && bashcompinit
+# complete -C 'aws_completer' aws
 
 # dvc autocomplete
-autoload -Uz compinit
-compinit
+# autoload -Uz compinit
+# compinit
 
 # color hints for tab completion
 # Case insensitive match
-zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
+# zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
 
 # Group matches and describe.
-zstyle ':completion:*:*:*:*:*' menu select
-zstyle ':completion:*:matches' group 'yes'
-zstyle ':completion:*:options' description 'yes'
-zstyle ':completion:*:options' auto-description '%d'
-zstyle ':completion:*:corrections' format ' %F{green}-- %d (errors: %e) --%f'
-zstyle ':completion:*:descriptions' format ' %F{yellow}-- %d --%f'
-zstyle ':completion:*:messages' format ' %F{purple} -- %d --%f'
-zstyle ':completion:*:warnings' format ' %F{red}-- no matches found --%f'
-zstyle ':completion:*:default' list-prompt '%S%M matches%s'
-zstyle ':completion:*' format ' %F{yellow}-- %d --%f'
-zstyle ':completion:*' group-name ''
-zstyle ':completion:*' verbose yes
-
-source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
-source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
-# Added by serverless binary installer
-export PATH="$HOME/.serverless/bin:$PATH"
+# zstyle ':completion:*:*:*:*:*' menu select
+# zstyle ':completion:*:matches' group 'yes'
+# zstyle ':completion:*:options' description 'yes'
+# zstyle ':completion:*:options' auto-description '%d'
+# zstyle ':completion:*:corrections' format ' %F{green}-- %d (errors: %e) --%f'
+# zstyle ':completion:*:descriptions' format ' %F{yellow}-- %d --%f'
+# zstyle ':completion:*:messages' format ' %F{purple} -- %d --%f'
+# zstyle ':completion:*:warnings' format ' %F{red}-- no matches found --%f'
+# zstyle ':completion:*:default' list-prompt '%S%M matches%s'
+# zstyle ':completion:*' format ' %F{yellow}-- %d --%f'
+# zstyle ':completion:*' group-name ''
+# zstyle ':completion:*' verbose yes
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
@@ -172,5 +231,24 @@ export TNS_ADMIN=/Applications/Oracle/network/admin
 export CLASSPATH=$CLASSPATH:$ORACLE_HOME
 export NLS_LANG="English_America.UTF8"
 
+
 # homebrew dont install the universe
 export HOMEBREW_NO_INSTALL_CLEANUP=true
+
+# add poetry to path
+export PATH="/Users/raymondgasper/.local/bin:$PATH"
+
+# use helix as default editor
+# export EDITOR=hx  # not ready yet, see #2111
+
+# activate z
+. /Users/raymondgasper/Library/z/z.sh # clone of https://github.com/rupa/z
+
+#######################
+# My Little Functions #
+#######################
+# gitignore curler
+function gi() { curl -sLw n https://www.toptal.com/developers/gitignore/api/$@ ;}
+# peek what's going on in a directory
+function peek() { ls -ltha "${1-.}" | head -n "${2-10}"; }
+
