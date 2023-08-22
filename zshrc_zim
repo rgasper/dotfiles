@@ -165,7 +165,7 @@ alias vi="nvim"
 alias dnsFlush="sudo killall -HUP mDNSResponder"
 alias ga="git add"
 alias gps="git push"
-alias gpsr='git push --set-upstream origin $(git rev-parse --abbrev-ref HEAD | tr -d "[:space:]")'
+alias gpsu='git push --set-upstream origin $(git rev-parse --abbrev-ref HEAD | tr -d "[:space:]")'
 alias gpl="git pull"
 alias gcm="git commit -m"
 alias wip="git commit --no-verify -m"
@@ -175,7 +175,7 @@ alias grss="git restore --staged"
 alias gco="git checkout" 
 alias gs="git status"
 alias gd="git diff"
-alias grom"git reset origin/main"
+alias grom"git reset origin/main || git reset origin/master"
 alias gds="git diff --staged"
 alias dcd="docker compose down"
 alias dcu="docker compose up"
@@ -251,4 +251,7 @@ export PATH="/Users/raymondgasper/.local/bin:$PATH"
 function gi() { curl -sLw n https://www.toptal.com/developers/gitignore/api/$@ ;}
 # peek what's going on in a directory
 function peek() { ls -ltha "${1-.}" | head -n "${2-10}"; }
-
+# https://github.com/antonmedv/walk
+function lk {
+  cd "$(walk "$@")"
+}
