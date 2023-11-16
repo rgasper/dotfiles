@@ -193,7 +193,7 @@ alias poetry-py-lsp='poetry add pylsp-mypy pyls-isort python-lsp-black pyls-flak
 alias icat="kitty +kitten icat"
 alias hg="kitty +kitten hyperlinked_grep"
 # anaconda
-# source /usr/local/anaconda3/bin/activate
+source /usr/local/anaconda3/bin/activate
 
 # aws autocomplete
 # autoload bashcompinit && bashcompinit
