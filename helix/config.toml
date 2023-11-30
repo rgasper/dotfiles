@@ -9,6 +9,7 @@ rulers = [121]
 cursorline = true
 color-modes = true
 bufferline = "always"
+auto-format = false
 
 [editor.indent-guides]
 render = true

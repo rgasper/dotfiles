@@ -6,10 +6,12 @@ file-types = ["py"]
 shebangs = ["python"]
 roots = []
 comment-token = "#"
-# language-server = { command = "pyright-langserver", args = ["--stdio"] }
-language-server = { command = "pylsp" }
+language-servers = ["pylsp"]
 indent = { tab-width = 4, unit = "    " }
 rulers = [120]
+
+[[language-server.pylsp.config]]
+command = "python -m pylsp"
 
 [[language]]
 name = "rust"
@@ -19,8 +21,16 @@ file-types = ["rs"]
 roots = ["Cargo.toml", "Cargo.lock"]
 auto-format = true
 comment-token = "//"
-language-server = { command = "rust-analyzer" }
+language-servers = ["rust-analyzer"]
 indent = { tab-width = 4, unit = "    " }
+
+ [language-server.rust-analyzer.config]
+ check = { command = "clippy", features = "all" }
+ diagnostics = { experimental = { enable = true } }
+ hover = { actions = { enable = true } }
+ typing = { autoClosingAngleBrackets = { enable = true } }
+ cargo = { allFeatures = true }
+ procMacro = { enable = true }
 
 [language.auto-pairs]
 '(' = ')'
