@@ -147,7 +147,7 @@ export TIMEFMT=$'\nreal\t%E\nuser\t%U \nsystem\t%S\nCPU\t%P\nMaxMem\t%M \nAvgMem
    # not-null ssh connection - remote
    export EDITOR='vi'
  else
-   # null ssh connection - local 
+   # null ssh connection - local
    export EDITOR='hx'
  fi
 
@@ -172,7 +172,7 @@ alias wip="git commit --no-verify -m"
 alias wipa="git commit -a --no-verify -m"
 alias grs="git restore"
 alias grss="git restore --staged"
-alias gco="git checkout" 
+alias gco="git checkout"
 alias gs="git status"
 alias gd="git diff"
 alias grom"git reset origin/main || git reset origin/master"

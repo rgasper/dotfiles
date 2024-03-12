@@ -1,16 +1,16 @@
 " normal settings
-set nowrap 
+set nowrap
 syntax on " turn on syntax highlighting
 set expandtab " convert tabs to spaces
 set tabstop=4 " width for tabs
 set softtabstop=4 " see multiple spaces as tabstops
 set shiftwidth=4 " width for autoindents
 set autoindent " indent new line same amount as previous line
-set copyindent " 
+set copyindent "
 set nu rnu " show hybrid line numbers
-set showcmd " 
+set showcmd "
 set backup " store backup files
-set noswapfile " disable swap file 
+set noswapfile " disable swap file
 set showmatch " show matches
 set nocompatible "disable vi compatibility
 set clipboard=unnamedplus " use system clipboard
@@ -143,7 +143,7 @@ nmap <silent> gd <Plug>(coc-definition)
 " Open definition in a split window
 nmap <silent> gD :vsp<CR><Plug>(coc-definition)<C-W>L
 
-" goto references 
+" goto references
 nmap <silent> gr <Plug>(coc-references-used)
 " Open references in a split window
 nmap <silent> gR :vsp<CR><Plug>(coc-references-used)<C-W>L
@@ -170,4 +170,3 @@ nmap <leader>qf  <Plug>(coc-fix-current)
 " format on enter, <cr> could be remapped by other vim plugin
 inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
                               \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
-

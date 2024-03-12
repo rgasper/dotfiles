@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 FILENAME
-    :author: 
+    :author:
     :created: TODAY
-    :copyright: YEAR Dun & Bradstreet 
+    :copyright: YEAR Dun & Bradstreet
 """

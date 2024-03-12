@@ -12,4 +12,3 @@ ms-vscode-remote.remote-ssh-edit-0.48.0
 oderwat.indent-rainbow-7.4.0
 pancho111203.vscode-ipython-0.5.0
 rust-lang.rust-0.7.0
-

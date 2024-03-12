@@ -1,4 +1,4 @@
 ## JIRA Issue: FILENAME
-## Description: 
+## Description:
 ## Date: TODAY
-## Author: 
+## Author:

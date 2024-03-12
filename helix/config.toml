@@ -25,4 +25,3 @@ git-ignore = true
 
 [editor.lsp]
 display-messages = true
-
