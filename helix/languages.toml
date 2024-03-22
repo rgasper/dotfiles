@@ -6,12 +6,24 @@ file-types = ["py"]
 shebangs = ["python"]
 roots = []
 comment-token = "#"
-language-servers = ["pylsp"]
+language-servers = ["pylsp", "ruff"]
 indent = { tab-width = 4, unit = "    " }
 rulers = [120]
 
-[[language-server.pylsp.config]]
-command = "python -m pylsp"
+[language-server.pylsp]
+command = "pylsp"
+
+[language-server.pylsp.config.settings]
+# args = ["-m", "pylsp"]
+
+[language-server.ruff]
+command = "ruff-lsp"
+
+[language-server.ruff.config.settings]
+# args = ["-m", "ruff_lsp"]
+
+
+
 
 [[language]]
 name = "rust"
