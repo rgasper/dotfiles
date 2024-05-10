@@ -2,13 +2,19 @@
 name = "python"
 scope = "source.python"
 injection-regex = "python"
-file-types = ["py"]
+file-types = ["py", "pyi", "py3", "pyw", "ptl", "rpy", "cpy", "ipy", "pyt", { glob = ".python_history" }, { glob = ".pythonstartup" }, { glob = ".pythonrc" }, { glob = "SConstruct" }, { glob = "SConscript" }]
 shebangs = ["python"]
-roots = []
+roots = ["pyproject.toml", "setup.py", "poetry.lock", "pyrightconfig.json"]
 comment-token = "#"
 language-servers = ["pylsp", "ruff"]
+# TODO: pyls needs utf-8 offsets
 indent = { tab-width = 4, unit = "    " }
 rulers = [120]
+
+[[grammar]]
+name = "python"
+source = { git = "https://github.com/tree-sitter/tree-sitter-python", rev = "4bfdd9033a2225cc95032ce77066b7aeca9e2efc" }
+
 
 [language-server.pylsp]
 command = "pylsp"
@@ -21,36 +27,3 @@ command = "ruff-lsp"
 
 [language-server.ruff.config.settings]
 # args = ["-m", "ruff_lsp"]
-
-
-
-
-[[language]]
-name = "rust"
-scope = "source.rust"
-injection-regex = "rust"
-file-types = ["rs"]
-roots = ["Cargo.toml", "Cargo.lock"]
-auto-format = true
-comment-token = "//"
-language-servers = ["rust-analyzer"]
-indent = { tab-width = 4, unit = "    " }
-
- [language-server.rust-analyzer.config]
- check = { command = "clippy", features = "all" }
- diagnostics = { experimental = { enable = true } }
- hover = { actions = { enable = true } }
- typing = { autoClosingAngleBrackets = { enable = true } }
- cargo = { allFeatures = true }
- procMacro = { enable = true }
-
-[language.auto-pairs]
-'(' = ')'
-'{' = '}'
-'[' = ']'
-'"' = '"'
-'`' = '`'
-
-[[grammar]]
-name = "rust"
-source = { git = "https://github.com/tree-sitter/tree-sitter-rust", rev = "41e23b454f503e6fe63ec4b6d9f7f2cf7788ab8e" }
