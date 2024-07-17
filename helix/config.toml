@@ -1,15 +1,15 @@
-theme = "gruvbox"
+theme = "kanagawa-dragon"
 
 [editor]
 line-number = "absolute"
 mouse = true
 shell = ["zsh", "-c"]
-scrolloff = 20
+scrolloff = 10
 rulers = [121]
 cursorline = true
 color-modes = true
 bufferline = "always"
-auto-format = false
+auto-format = true
 
 [editor.indent-guides]
 render = true
