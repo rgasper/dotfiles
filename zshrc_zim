@@ -276,3 +276,28 @@ function frg {
 }
 zstyle ':completion:*' menu select
 fpath+=~/.zfunc
+
+awsenv() {
+  # author wamsatson
+  local profile="$1"
+  if [[ -z "$profile" ]]; then
+    echo "Usage: awsenv <profile-name>"
+    return 1
+  fi
+  # Check if profile exists
+  if ! grep -q "\[profile $profile\]" ~/.aws/config && ! grep -q "\[$profile\]" ~/.aws/credentials; then
+    echo "Profile '$profile' not found in ~/.aws/config or ~/.aws/credentials"
+    return 1
+  fi
+  export AWS_PROFILE="$profile"
+  echo "🔁 Switched to AWS profile: $AWS_PROFILE"
+  # Explicitly use the profile in the command, regardless of env
+  local identity
+  identity=$(aws sts get-caller-identity --profile "$AWS_PROFILE" --output json 2>/dev/null)
+  if [[ $? -eq 0 ]]; then
+    echo "$identity" | jq '. | {Account, Arn}'
+  else
+    echo "⚠️  Failed to get caller identity. Try: aws sso login --profile $AWS_PROFILE"
+  fi
+  RPROMPT='$( [[ -n $AWS_PROFILE ]] && echo "%F{242}(aws:$AWS_PROFILE)%f" )'
+}
