@@ -188,7 +188,7 @@ alias dps="docker ps"
 alias lzd='lazydocker'
 alias gg='lazygit'
 alias la='ls -ltha'
-alias pip-py-lsp='pip install --upgrade pylsp-mypy python-lsp-server ruff-lsp'
+alias pip-py-lsp='pip install --upgrade pylsp-mypy pyls-isort python-lsp-black pyls-flake8 python-lsp-server python-lsp-black'
 alias poetry-py-lsp='poetry add pylsp-mypy pyls-isort python-lsp-black pyls-flake8 python-lsp-server python-lsp-black'
 alias icat="kitty +kitten icat"
 alias hg="kitty +kitten hyperlinked_grep"
@@ -241,7 +241,7 @@ export HOMEBREW_NO_INSTALL_CLEANUP=true
 export PATH="/Users/raymondgasper/.local/bin:$PATH"
 
 # use helix as default editor
-# export EDITOR=hx  # not ready yet, see #2111
+export EDITOR=hx  # not ready yet, see #2111
 
 # activate z
 . /Users/raymondgasper/Library/z/z.sh # clone of https://github.com/rupa/z
@@ -277,27 +277,83 @@ function frg {
 zstyle ':completion:*' menu select
 fpath+=~/.zfunc
 
+# Added by Windsurf
+export PATH="/Users/raymondgasper/.codeium/windsurf/bin:$PATH"
+
 awsenv() {
-  # author wamsatson
   local profile="$1"
+
   if [[ -z "$profile" ]]; then
     echo "Usage: awsenv <profile-name>"
     return 1
   fi
+
   # Check if profile exists
   if ! grep -q "\[profile $profile\]" ~/.aws/config && ! grep -q "\[$profile\]" ~/.aws/credentials; then
     echo "Profile '$profile' not found in ~/.aws/config or ~/.aws/credentials"
     return 1
   fi
+
   export AWS_PROFILE="$profile"
   echo "🔁 Switched to AWS profile: $AWS_PROFILE"
+
+  # --- Get and export temporary credentials using aws-sso-util ---
+
+  # Check if aws-sso-util is installed
+  if ! command -v aws-sso-util &> /dev/null; then
+      echo "❌ Error: aws-sso-util is not installed."
+      echo "Install it using: pip install aws-sso-util"
+      # Optionally, proceed without exporting keys if the tool isn't essential for all profiles
+      # return 1 # Uncomment this if aws-sso-util is mandatory
+  else
+      # Unset existing AWS credential environment variables to avoid conflicts
+      unset AWS_ACCESS_KEY_ID
+      unset AWS_SECRET_ACCESS_KEY
+      unset AWS_SESSION_TOKEN
+
+      echo "Attempting to fetch and export temporary credentials for profile: $AWS_PROFILE"
+      # Use aws-sso-util to get credentials and evaluate the output (which is 'export VAR=value;')
+      # The --profile flag tells aws-sso-util which profile to use from ~/.aws/config
+      # It will use the cached SSO token or prompt for login if necessary
+      if eval "$(aws-sso-util credentials --profile "$AWS_PROFILE")"; then
+          echo "✅ Exported AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, and AWS_SESSION_TOKEN."
+      else
+          echo "⚠️  Failed to fetch or export temporary credentials using aws-sso-util."
+          echo "Ensure you have run 'aws sso login --profile $AWS_PROFILE' recently."
+      fi
+  fi
+  # --- End of credential handling ---
+
+
   # Explicitly use the profile in the command, regardless of env
+  # This command will now use the exported environment variables if successful,
+  # or fall back to the profile configuration if not.
   local identity
   identity=$(aws sts get-caller-identity --profile "$AWS_PROFILE" --output json 2>/dev/null)
+
   if [[ $? -eq 0 ]]; then
     echo "$identity" | jq '. | {Account, Arn}'
   else
     echo "⚠️  Failed to get caller identity. Try: aws sso login --profile $AWS_PROFILE"
   fi
+
   RPROMPT='$( [[ -n $AWS_PROFILE ]] && echo "%F{242}(aws:$AWS_PROFILE)%f" )'
 }
+
+
+# Claude Code configuration
+alias claude="/Users/raymondgasper/.claude/local/claude"
+export CLAUDE_CODE_USE_BEDROCK=1
+# export ANTHROPIC_MODEL='us.anthropic.claude-3-7-sonnet-20250219-v1:0'  # bigger, expensiver, ?? better ??
+export ANTHROPIC_MODEL='us.anthropic.claude-3-5-haiku-20241022-v1:0'  # cheaper, smaller, faster, ?? worse ??
+export DISABLE_PROMPT_CACHING=1  # bedrock doesn't support this, at least not without non-default configuration
+
+# Ensure Homebrew bin is at the front of the PATH, removing duplicates
+if command -v brew &> /dev/null; then
+  BREW_BIN_PATH="$(brew --prefix)/bin"
+  # Remove existing instances of the brew bin path from PATH
+  # Use awk for robustness with multiple colons or leading/trailing colons
+  export PATH=$(echo $PATH | awk -v RS=':' -v ORS=':' "\$0 != \"$BREW_BIN_PATH\"" | sed 's/:$//')
+  # Prepend the brew bin path
+  export PATH="$BREW_BIN_PATH:$PATH"
+fi
