@@ -25,3 +25,14 @@ git-ignore = true
 
 [editor.lsp]
 display-messages = true
+
+# sub word movement keybinds
+[keys.normal]
+W = 'move_next_sub_word_start'
+B = 'move_prev_sub_word_start'
+E = 'move_next_sub_word_end'
+
+[keys.select]
+W = 'extend_next_sub_word_start'
+B = 'extend_prev_sub_word_start'
+E = 'extend_next_sub_word_end'
