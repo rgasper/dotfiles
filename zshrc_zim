@@ -281,65 +281,29 @@ fpath+=~/.zfunc
 export PATH="/Users/raymondgasper/.codeium/windsurf/bin:$PATH"
 
 awsenv() {
+  # thanks wamsatson
   local profile="$1"
-
   if [[ -z "$profile" ]]; then
     echo "Usage: awsenv <profile-name>"
     return 1
   fi
-
   # Check if profile exists
   if ! grep -q "\[profile $profile\]" ~/.aws/config && ! grep -q "\[$profile\]" ~/.aws/credentials; then
     echo "Profile '$profile' not found in ~/.aws/config or ~/.aws/credentials"
     return 1
   fi
-
   export AWS_PROFILE="$profile"
   echo "🔁 Switched to AWS profile: $AWS_PROFILE"
-
-  # --- Get and export temporary credentials using aws-sso-util ---
-
-  # Check if aws-sso-util is installed
-  if ! command -v aws-sso-util &> /dev/null; then
-      echo "❌ Error: aws-sso-util is not installed."
-      echo "Install it using: pip install aws-sso-util"
-      # Optionally, proceed without exporting keys if the tool isn't essential for all profiles
-      # return 1 # Uncomment this if aws-sso-util is mandatory
-  else
-      # Unset existing AWS credential environment variables to avoid conflicts
-      unset AWS_ACCESS_KEY_ID
-      unset AWS_SECRET_ACCESS_KEY
-      unset AWS_SESSION_TOKEN
-
-      echo "Attempting to fetch and export temporary credentials for profile: $AWS_PROFILE"
-      # Use aws-sso-util to get credentials and evaluate the output (which is 'export VAR=value;')
-      # The --profile flag tells aws-sso-util which profile to use from ~/.aws/config
-      # It will use the cached SSO token or prompt for login if necessary
-      if eval "$(aws-sso-util credentials --profile "$AWS_PROFILE")"; then
-          echo "✅ Exported AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, and AWS_SESSION_TOKEN."
-      else
-          echo "⚠️  Failed to fetch or export temporary credentials using aws-sso-util."
-          echo "Ensure you have run 'aws sso login --profile $AWS_PROFILE' recently."
-      fi
-  fi
-  # --- End of credential handling ---
-
-
   # Explicitly use the profile in the command, regardless of env
-  # This command will now use the exported environment variables if successful,
-  # or fall back to the profile configuration if not.
   local identity
   identity=$(aws sts get-caller-identity --profile "$AWS_PROFILE" --output json 2>/dev/null)
-
   if [[ $? -eq 0 ]]; then
     echo "$identity" | jq '. | {Account, Arn}'
   else
     echo "⚠️  Failed to get caller identity. Try: aws sso login --profile $AWS_PROFILE"
   fi
-
   RPROMPT='$( [[ -n $AWS_PROFILE ]] && echo "%F{242}(aws:$AWS_PROFILE)%f" )'
 }
-
 
 # Claude Code configuration
 alias claude="/Users/raymondgasper/.claude/local/claude"
