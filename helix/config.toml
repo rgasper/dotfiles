@@ -36,3 +36,7 @@ E = 'move_next_sub_word_end'
 W = 'extend_next_sub_word_start'
 B = 'extend_prev_sub_word_start'
 E = 'extend_next_sub_word_end'
+
+[keys.insert]
+"A-left" = "move_prev_word_start"
+"A-right" = "move_next_word_start"
