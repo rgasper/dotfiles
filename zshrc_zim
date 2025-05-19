@@ -192,6 +192,7 @@ alias pip-py-lsp='pip install --upgrade pylsp-mypy pyls-isort python-lsp-black p
 alias poetry-py-lsp='poetry add pylsp-mypy pyls-isort python-lsp-black pyls-flake8 python-lsp-server python-lsp-black'
 alias icat="kitty +kitten icat"
 alias hg="kitty +kitten hyperlinked_grep"
+
 # anaconda
 source /usr/local/anaconda3/bin/activate
 export CONDA_AUTO_ACTIVATE_BASE=false
@@ -236,12 +237,14 @@ export NLS_LANG="English_America.UTF8"
 
 # homebrew dont install the universe
 export HOMEBREW_NO_INSTALL_CLEANUP=true
+export HOMEBREW_NO_AUTO_UPDATE=1
+export HOMEBREW_NO_ANALYTICS=1
 
-# add poetry to path
+
 export PATH="/Users/raymondgasper/.local/bin:$PATH"
 
 # use helix as default editor
-export EDITOR=hx  # not ready yet, see #2111
+export EDITOR=hx
 
 # activate z
 . /Users/raymondgasper/Library/z/z.sh # clone of https://github.com/rupa/z
