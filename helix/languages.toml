@@ -6,7 +6,8 @@ file-types = ["py", "pyi", "py3", "pyw", "ptl", "rpy", "cpy", "ipy", "pyt", { gl
 shebangs = ["python"]
 roots = ["pyproject.toml", "setup.py", "poetry.lock", "pyrightconfig.json"]
 comment-token = "#"
-language-servers = ["pylsp", "pyright", "ruff"]
+# language-servers = ["pylsp", "pyright", "ruff"]
+language-servers = ["pylsp", "ruff"]
 indent = { tab-width = 4, unit = "    " }
 rulers = [120]
 
@@ -16,6 +17,10 @@ source = { git = "https://github.com/tree-sitter/tree-sitter-python", rev = "4bf
 
 [language-server.pylsp]
 command = "pylsp"
+
+[language-server.pylsp.config.pylsp]
+plugins.pylsp_mypy.enabled = true
+plugins.pylsp_mypy.live_mode = true
 
 [language-server.pyright]
 command = "pyright-langserver"
