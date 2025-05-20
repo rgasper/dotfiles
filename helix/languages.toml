@@ -6,9 +6,7 @@ file-types = ["py", "pyi", "py3", "pyw", "ptl", "rpy", "cpy", "ipy", "pyt", { gl
 shebangs = ["python"]
 roots = ["pyproject.toml", "setup.py", "poetry.lock", "pyrightconfig.json"]
 comment-token = "#"
-# lsp before pyright so in venvs it has gotodef on imported libraries
 language-servers = ["pylsp", "pyright", "ruff"]
-# TODO: pyls needs utf-8 offsets
 indent = { tab-width = 4, unit = "    " }
 rulers = [120]
 
@@ -16,19 +14,16 @@ rulers = [120]
 name = "python"
 source = { git = "https://github.com/tree-sitter/tree-sitter-python", rev = "4bfdd9033a2225cc95032ce77066b7aeca9e2efc" }
 
-[language-server.pyright]
-# install: pipx install pyright
-command = "pyright-langserver"
-args = ["--stdio"]
-
 [language-server.pylsp]
 command = "pylsp"
 
-[language-server.pylsp.config.settings]
-# args = ["-m", "pylsp"]
+[language-server.pyright]
+command = "pyright-langserver"
+args = ["--stdio"]
+
+[language-server.pyright.config.python.analysis]
+typeCheckingMode = "basic"
 
 [language-server.ruff]
-command = "ruff-lsp"
-
-[language-server.ruff.config.settings]
-# args = ["-m", "ruff_lsp"]
+command = "ruff"
+args = ["server"]
