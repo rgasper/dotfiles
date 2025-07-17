@@ -12,4 +12,5 @@ brew "fd"
 brew "yazi"
 brew "poppler"
 brew "resvg"
-brew "kitty"
+brew "htop"
+brew "kitty" # doesnt actually work, here to remind me: curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
