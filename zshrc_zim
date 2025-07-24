@@ -159,6 +159,8 @@ export TIMEFMT=$'\nreal\t%E\nuser\t%U \nsystem\t%S\nCPU\t%P\nMaxMem\t%M \nAvgMem
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
 # For a full list of active aliases, run `alias`.
 
+alias mk='minikube'
+alias kc='kubectl'
 alias tg="terragrunt"
 alias tf="terraform"
 alias safebash="curl https://raw.githubusercontent.com/rgasper/minimal_safe_bash_script/main/template.sh"
