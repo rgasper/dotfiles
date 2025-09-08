@@ -286,28 +286,86 @@ fpath+=~/.zfunc
 # Added by Windsurf
 export PATH="/Users/raymondgasper/.codeium/windsurf/bin:$PATH"
 
-awsenv() {
-  # thanks wamsatson
+# thanks sam and rory
+function awsenv {
+  # If no profile argument is provided, list all available profiles and show current env
+  if [[ -z "$1" ]]; then
+    echo "📋 Available AWS Profiles:"
+    echo "------------------------"
+
+    # Show current profile if set
+    if [[ -n "$AWS_PROFILE" ]]; then
+      echo "🟢 Current Profile: $AWS_PROFILE"
+      echo "------------------------"
+    fi
+
+    # List profiles from config file
+    if [[ -f "$HOME/.aws/config" ]]; then
+      grep "\[profile" "$HOME/.aws/config" | sed 's/\[profile \(.*\)\]/\1/' | while read -r profile; do
+        if [[ "$profile" == "$AWS_PROFILE" ]]; then
+          echo "  ✓ $profile"
+        else
+          echo "  • $profile"
+        fi
+      done
+    fi
+
+    # Add default profile if it exists in credentials file
+    if [[ -f "$HOME/.aws/credentials" ]] && grep -q "^\[default\]" "$HOME/.aws/credentials"; then
+      if [[ "default" == "$AWS_PROFILE" ]]; then
+        echo "  ✓ default"
+      else
+        echo "  • default"
+      fi
+    fi
+
+    # List other profiles from credentials file
+    if [[ -f "$HOME/.aws/credentials" ]]; then
+      grep "\[" "$HOME/.aws/credentials" | sed 's/\[\(.*\)\]/\1/' | grep -v '^default$' | while read -r profile; do
+        if [[ "$profile" == "$AWS_PROFILE" ]]; then
+          echo "  ✓ $profile"
+        else
+          echo "  • $profile"
+        fi
+      done
+    fi
+    echo "📝 Usage: awsenv <profile-name>"
+    return 0
+  fi
+
   local profile="$1"
-  if [[ -z "$profile" ]]; then
-    echo "Usage: awsenv <profile-name>"
+  local config_path="$HOME/.aws/config"
+  local creds_path="$HOME/.aws/credentials"
+
+  # Check if profile exists in either config or credentials
+  if ! grep -q "\[profile $profile\]" "$config_path" && ! grep -q "\[$profile\]" "$creds_path" && [[ "$profile" != "default" ]]; then
+    echo "❌ Profile '$profile' not found"
+    echo "   Check your AWS configuration files:"
+    echo "   - $config_path"
+    echo "   - $creds_path"
     return 1
   fi
-  # Check if profile exists
-  if ! grep -q "\[profile $profile\]" ~/.aws/config && ! grep -q "\[$profile\]" ~/.aws/credentials; then
-    echo "Profile '$profile' not found in ~/.aws/config or ~/.aws/credentials"
-    return 1
-  fi
+
+  # Set the AWS profile
   export AWS_PROFILE="$profile"
-  echo "🔁 Switched to AWS profile: $AWS_PROFILE"
-  # Explicitly use the profile in the command, regardless of env
-  local identity
-  identity=$(aws sts get-caller-identity --profile "$AWS_PROFILE" --output json 2>/dev/null)
-  if [[ $? -eq 0 ]]; then
-    echo "$identity" | jq '. | {Account, Arn}'
-  else
-    echo "⚠️  Failed to get caller identity. Try: aws sso login --profile $AWS_PROFILE"
+  echo "✅ Switched to AWS profile: $AWS_PROFILE"
+
+  # Get caller identity and handle SSO login if needed
+  if ! identity=$(aws sts get-caller-identity --profile "$AWS_PROFILE" --output json 2>/dev/null); then
+    echo "⚠️  Authentication needed, attempting SSO login..."
+    if aws sso login --profile "$AWS_PROFILE"; then
+      echo "✅ SSO login successful"
+      identity=$(aws sts get-caller-identity --profile "$AWS_PROFILE" --output json)
+    else
+      echo "❌ SSO login failed"
+      return 1
+    fi
   fi
+
+  echo "🔑 Current AWS Identity:"
+  echo "$identity" | jq '. | {Account, Arn}'
+
+  # Update right prompt to show active AWS profile
   RPROMPT='$( [[ -n $AWS_PROFILE ]] && echo "%F{242}(aws:$AWS_PROFILE)%f" )'
 }
 
@@ -315,7 +373,7 @@ awsenv() {
 alias claude="/Users/raymondgasper/.claude/local/claude"
 export CLAUDE_CODE_USE_BEDROCK=1
 # export ANTHROPIC_MODEL='us.anthropic.claude-3-7-sonnet-20250219-v1:0'  # bigger, expensiver, ?? better ??
-export ANTHROPIC_MODEL='us.anthropic.claude-3-5-haiku-20241022-v1:0'  # cheaper, smaller, faster, ?? worse ??
+# export ANTHROPIC_MODEL='us.anthropic.claude-3-5-haiku-20241022-v1:0'  # cheaper, smaller, faster, ?? worse ??
 export DISABLE_PROMPT_CACHING=1  # bedrock doesn't support this, at least not without non-default configuration
 
 # Ensure Homebrew bin is at the front of the PATH, removing duplicates
@@ -341,3 +399,58 @@ function y() {
 export DOCKER_HOST=$(docker context inspect | jq -r '.[0].Endpoints.docker.Host')
 
 eval "$(direnv hook zsh)"
+
+
+function ticket_diff() {
+    local ticket_id="$1"
+
+    # 1. Validate input argument
+    if [ -z "$ticket_id" ]; then
+        echo "Usage: get_ticket_commits_and_diff <TICKET_ID>"
+        echo "Example: get_ticket_commits_and_diff INF-123"
+        return 1
+    fi
+
+    # 2. Check if inside a Git repository
+    if ! git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
+        echo "Error: Not inside a Git repository."
+        return 1
+    fi
+
+    echo "Searching for commits containing '$ticket_id'..."
+    echo
+
+    # 3. Collect commits containing the ticket ID
+    # --all: Search across all branches, tags, etc.
+    # --grep="$ticket_id": Filter commit messages for the ticket ID.
+    # --pretty=format:"%H %ad": Format output to show commit hash and author date.
+    # --date=iso: Use ISO 8601 format for the date.
+    local commits_info=$(git log --all --grep="$ticket_id" --pretty=format:"%H %ad" --date=iso)
+
+    if [ -z "$commits_info" ]; then
+        echo "No commits found containing '$ticket_id'."
+        return 0
+    fi
+
+    echo "--- Found Commits ---"
+    echo
+
+    # 4. Iterate through each found commit
+    while IFS= read -r line; do
+        local commit_hash=$(echo "$line" | awk '{print $1}')
+        # Extract the timestamp (everything after the first space)
+        local commit_timestamp=$(echo "$line" | cut -d' ' -f2-)
+
+        echo "Commit Hash: $commit_hash"
+        echo "Timestamp: $commit_timestamp"
+        echo "--------------------------------------------------"
+        echo "Git Diff Output for Commit $commit_hash:"
+        # `git show` displays the commit message, author, date, and then the diff.
+        # This provides full context for each commit's changes.
+        git show "$commit_hash"
+        echo "=================================================="
+        echo
+    done <<< "$commits_info"
+
+    echo "--- End of Commit List ---"
+}
