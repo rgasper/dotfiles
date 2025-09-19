@@ -196,10 +196,6 @@ alias icat="kitty +kitten icat"
 alias hg="kitty +kitten hyperlinked_grep"
 alias poetry-reinstall='poetry lock --no-cache --regenerate && poetry sync --with dev --no-cache'
 
-# anaconda
-source /usr/local/anaconda3/bin/activate
-export CONDA_AUTO_ACTIVATE_BASE=false
-conda deactivate
 
 # aws autocomplete
 # autoload bashcompinit && bashcompinit
