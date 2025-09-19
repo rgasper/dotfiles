@@ -94,7 +94,7 @@ ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
 # ------------------
 
 ZIM_HOME=${ZDOTDIR:-${HOME}}/.zim
-# Download zimfw plugin manager if missing.
+# # Download zimfw plugin manager if missing.
 if [[ ! -e ${ZIM_HOME}/zimfw.zsh ]]; then
   if (( ${+commands[curl]} )); then
     curl -fsSL --create-dirs -o ${ZIM_HOME}/zimfw.zsh \
@@ -244,9 +244,6 @@ export PATH="/Users/raymondgasper/.local/bin:$PATH"
 
 # use helix as default editor
 export EDITOR=hx
-
-# activate z
-. /Users/raymondgasper/Library/z/z.sh # clone of https://github.com/rupa/z
 
 #######################
 # My Little Functions #
