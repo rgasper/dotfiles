@@ -225,14 +225,6 @@ alias poetry-reinstall='poetry lock --no-cache --regenerate && poetry sync --wit
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
-# allow use of oracle cli tools
-export PATH=$PATH:/Applications/Oracle
-export ORACLE_HOME=/Applications/Oracle
-export DYLD_LIBRARY_PATH=/Applications/Oracle
-export TNS_ADMIN=/Applications/Oracle/network/admin
-export CLASSPATH=$CLASSPATH:$ORACLE_HOME
-export NLS_LANG="English_America.UTF8"
-
 
 # homebrew dont install the universe
 export HOMEBREW_NO_INSTALL_CLEANUP=true
@@ -241,6 +233,8 @@ export HOMEBREW_NO_ANALYTICS=1
 
 
 export PATH="/Users/raymondgasper/.local/bin:$PATH"
+# libpq homebrew doesnt put in path by default...
+export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
 
 # use helix as default editor
 export EDITOR=hx
