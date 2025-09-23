@@ -134,7 +134,9 @@ unset key
 # User Configuration
 # ------------------
 
-
+# openssl installed by brew. xcode-select not including them anymore? who knows.
+export LDFLAGS="-L$(brew --prefix openssl)/lib" 
+export CPPFLAGS="-I$(brew --prefix openssl)/include"
 export TIMEFMT=$'\nreal\t%E\nuser\t%U \nsystem\t%S\nCPU\t%P\nMaxMem\t%M \nAvgMem\t%K'
 
 # export MANPATH="/usr/local/man:$MANPATH"
