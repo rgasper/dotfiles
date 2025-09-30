@@ -359,11 +359,7 @@ function awsenv {
 }
 
 # Claude Code configuration
-alias claude="/Users/raymondgasper/.claude/local/claude"
 export CLAUDE_CODE_USE_BEDROCK=1
-# export ANTHROPIC_MODEL='us.anthropic.claude-3-7-sonnet-20250219-v1:0'  # bigger, expensiver, ?? better ??
-# export ANTHROPIC_MODEL='us.anthropic.claude-3-5-haiku-20241022-v1:0'  # cheaper, smaller, faster, ?? worse ??
-export DISABLE_PROMPT_CACHING=1  # bedrock doesn't support this, at least not without non-default configuration
 
 # Ensure Homebrew bin is at the front of the PATH, removing duplicates
 if command -v brew &> /dev/null; then
