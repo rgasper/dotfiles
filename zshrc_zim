@@ -439,3 +439,5 @@ function ticket_diff() {
 
     echo "--- End of Commit List ---"
 }
+
+eval "$(pixi completion --shell zsh)"
