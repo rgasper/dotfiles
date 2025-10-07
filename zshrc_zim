@@ -238,6 +238,9 @@ export PATH="/Users/raymondgasper/.local/bin:$PATH"
 # libpq homebrew doesnt put in path by default...
 export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
 
+# java brew path, it doesn't do it automatically
+PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
+
 # use helix as default editor
 export EDITOR=hx
 
@@ -271,9 +274,6 @@ function frg {
 }
 zstyle ':completion:*' menu select
 fpath+=~/.zfunc
-
-# Added by Windsurf
-export PATH="/Users/raymondgasper/.codeium/windsurf/bin:$PATH"
 
 # thanks sam and rory
 function awsenv {
