@@ -1,5 +1,9 @@
 # dotfiles
 
+for setting up on a new machine
+
+## callouts
+
 Terminal things I like:
 
 - [rupa-z](https://github.com/rupa/z/)
