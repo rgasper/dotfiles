@@ -440,11 +440,12 @@ function ticket_diff() {
     echo "--- End of Commit List ---"
 }
 
+# something, cannot figure out what, is setting my tmpdir to a special OS-managed directory in /var
+TMPDIR=/tmp/
+
 #########################
 #         pixi          #
 #########################
 eval "$(pixi completion --shell zsh)"
-# something, cannot figure out what, is setting my tmpdir to a special OS-managed directory in /var
-# this breaks pixi! It doesn't seem to break anything else. IDK why. This fixes pixi
 mkdir -p $HOME/.pixi-tmp
 alias pixi="TMPDIR=$HOME/.pixi-tmp pixi"
