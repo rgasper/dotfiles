@@ -6,10 +6,11 @@ file-types = ["py", "pyi", "py3", "pyw", "ptl", "rpy", "cpy", "ipy", "pyt", { gl
 shebangs = ["python"]
 roots = ["pyproject.toml", "setup.py", "poetry.lock", "pyrightconfig.json"]
 comment-token = "#"
-# language-servers = ["pylsp", "pyright", "ruff"]
-language-servers = ["pylsp", "ruff"]
+language-servers = ["zuban"]
 indent = { tab-width = 4, unit = "    " }
 rulers = [120]
+formatter = { command = "ruff", args = ["format", "--line-length", "120", "-"] }
+auto-format = true
 
 [[grammar]]
 name = "python"
@@ -22,13 +23,6 @@ command = "pylsp"
 plugins.pylsp_mypy.enabled = true
 plugins.pylsp_mypy.live_mode = true
 
-[language-server.pyright]
-command = "pyright-langserver"
-args = ["--stdio"]
-
-[language-server.pyright.config.python.analysis]
-typeCheckingMode = "basic"
-
-[language-server.ruff]
-command = "ruff"
+[language-server.zuban]
+command = "zuban"
 args = ["server"]
