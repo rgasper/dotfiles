@@ -6,7 +6,7 @@ file-types = ["py", "pyi", "py3", "pyw", "ptl", "rpy", "cpy", "ipy", "pyt", { gl
 shebangs = ["python"]
 roots = ["pyproject.toml", "setup.py", "poetry.lock", "pyrightconfig.json"]
 comment-token = "#"
-language-servers = ["zuban"]
+language-servers = ["ty"]
 indent = { tab-width = 4, unit = "    " }
 rulers = [120]
 formatter = { command = "ruff", args = ["format", "--line-length", "120", "-"] }
@@ -25,4 +25,8 @@ plugins.pylsp_mypy.live_mode = true
 
 [language-server.zuban]
 command = "zuban"
+args = ["server"]
+
+[language-server.ty]
+command = "ty"
 args = ["server"]
