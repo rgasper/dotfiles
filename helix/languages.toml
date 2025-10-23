@@ -6,10 +6,13 @@ file-types = ["py", "pyi", "py3", "pyw", "ptl", "rpy", "cpy", "ipy", "pyt", { gl
 shebangs = ["python"]
 roots = ["pyproject.toml", "setup.py", "poetry.lock", "pyrightconfig.json"]
 comment-token = "#"
-language-servers = [
-  {name="ty", except-features=["rename-symbol"]},
-  {name="pylsp", only-features=["rename-symbol"]}
-]
+# not using ty until https://github.com/astral-sh/ty/issues/1413 gets resolved
+# language-servers = [
+#   {name="ty", except-features=["rename-symbol"]},
+#   {name="pylsp", only-features=["rename-symbol"]}
+# ]
+language-servers = ["pylsp"]
+
 indent = { tab-width = 4, unit = "    " }
 rulers = [120]
 formatter = { command = "ruff", args = ["format", "--line-length", "120", "-"] }
