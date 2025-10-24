@@ -4,15 +4,14 @@ scope = "source.python"
 injection-regex = "python"
 file-types = ["py", "pyi", "py3", "pyw", "ptl", "rpy", "cpy", "ipy", "pyt", { glob = ".python_history" }, { glob = ".pythonstartup" }, { glob = ".pythonrc" }, { glob = "SConstruct" }, { glob = "SConscript" }]
 shebangs = ["python"]
-# IDK why these two are different...
-roots = ["pyproject.toml", "setup.py"]
-workspace-lsp-roots = ["pyproject.toml", "setup.py"]
+roots = ["pyproject.toml", "setup.py", "manage.py"]
 comment-token = "#"
-language-servers = [
-  {name="ty", except-features=["rename-symbol"]},
-  {name="pylsp", only-features=["rename-symbol"]}
-]
-
+# language-servers = [
+#   {name="ty", except-features=["rename-symbol"]},
+#   {name="pylsp", only-features=["rename-symbol"]}
+# ]
+# until https://github.com/helix-editor/helix/issues/14649 is resolved
+language-servers = ["pylsp"]
 indent = { tab-width = 4, unit = "    " }
 rulers = [120]
 formatter = { command = "ruff", args = ["format", "--line-length", "120", "-"] }
@@ -25,20 +24,20 @@ source = { git = "https://github.com/tree-sitter/tree-sitter-python", rev = "4bf
 [language-server.pylsp]
 command = "pylsp"
 
-# shouldn't need this with ty installed
-# [language-server.pylsp.config.pylsp]
-# plugins.pylsp_mypy.enabled = true
-# plugins.pylsp_mypy.live_mode = true
-
-[language-server.zuban]
-command = "zuban"
-args = ["server"]
-
 [language-server.ty]
 command = "ty"
 args = ["server"]
 
 # uncomment if you need to debug ty
-# [language-server.ty.config]
-# logLevel = "debug"
-# logFile = "/Users/raymondgasper/.cache/ty/helix-ty.log"
+[language-server.ty.config]
+logLevel = "debug"
+logFile = "/Users/raymondgasper/.cache/ty/helix-ty.log"
+
+# once ty works, can remove this
+[language-server.pylsp.config.pylsp]
+plugins.pylsp_mypy.enabled = true
+plugins.pylsp_mypy.live_mode = true
+
+# [language-server.zuban]
+# command = "zuban"
+# args = ["server"]
