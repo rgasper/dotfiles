@@ -3,7 +3,7 @@ description: generates a high-level summary of the desired question against the 
 ---
 
 please explain to me how the $ARGUMENTS works in this codebase. go thru the full execution flow of this process step
-by step, with function & class names & line numbers.
+by step, with function & class names & line numbers. This summary should be concise and formatted for readability. Try to get less than 1000 words, and less than 5 specific code examples. 
 
 if the $ARGUMENTS are missing, or asking about a whole service in a monorepo, instead of explaining a specific feature, give an architecture level overview of the whole
 codebase.
