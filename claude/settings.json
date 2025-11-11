@@ -9,6 +9,9 @@
     ],
     "defaultMode": "plan"
   },
-  "alwaysThinkingEnabled": true,
-  "model": "global.anthropic.claude-haiku-4-5-20251001-v1:0"
+  "model": "global.anthropic.claude-haiku-4-5-20251001-v1:0",
+  "enabledPlugins": {
+    "claude-mermaid@claude-mermaid": true
+  },
+  "alwaysThinkingEnabled": true
 }
