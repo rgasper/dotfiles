@@ -173,6 +173,7 @@ alias ga="git add"
 alias gps="git push"
 alias gpsu='git push --set-upstream origin $(git rev-parse --abbrev-ref HEAD | tr -d "[:space:]")'
 alias gpl="git pull"
+alias gplrs="git pull --recurse-submodules"
 alias gcm="git commit -m"
 alias wip="git commit --no-verify -m"
 alias wipa="git commit -a --no-verify -m"
@@ -442,6 +443,15 @@ function ticket_diff() {
 
 # something, cannot figure out what, is setting my tmpdir to a special OS-managed directory in /var
 TMPDIR=/tmp/
+
+function gcors() {
+  local branch="$1"
+  if [ -z "$branch" ]; then
+    echo "Usage: checkout_submodules <branch_name>"
+    return 1
+  fi
+  git submodule foreach --recursive "git checkout $branch && git pull origin $branch"
+}
 
 #########################
 #         pixi          #
