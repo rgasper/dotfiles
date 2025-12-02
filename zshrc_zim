@@ -163,7 +163,6 @@ export TIMEFMT=$'\nreal\t%E\nuser\t%U \nsystem\t%S\nCPU\t%P\nMaxMem\t%M \nAvgMem
 
 alias mk='minikube'
 alias kc='kubectl'
-alias tg="terragrunt"
 alias tf="terraform"
 alias safebash="curl https://raw.githubusercontent.com/rgasper/minimal_safe_bash_script/main/template.sh"
 alias todo="todo.sh"
@@ -459,3 +458,18 @@ function gcors() {
 eval "$(pixi completion --shell zsh)"
 mkdir -p $HOME/.pixi-tmp
 alias pixi="TMPDIR=$HOME/.pixi-tmp pixi"
+
+
+function tg() {
+  local dir="$PWD"
+
+  if [[ "$dir" == *"devops-terraform-live/environments/platform-development"* ]]; then
+    [[ "$AWS_PROFILE" == "dev" ]] || { echo "ERROR: Must use AWS_PROFILE=dev in platform-development."; return 1; }
+  elif [[ "$dir" == *"devops-terraform-live/environments/central-networking"* ]]; then
+    [[ "$AWS_PROFILE" == "net" ]] || { echo "ERROR: Must use AWS_PROFILE=net in central-networking."; return 1; }
+  elif [[ "$dir" == *"devops-terraform-live/environments/platform-production"* ]]; then
+    [[ "$AWS_PROFILE" == "prod" ]] || { echo "ERROR: Must use AWS_PROFILE=prod in platform-production."; return 1; }
+  fi
+
+  command terragrunt "$@"
+}
