@@ -77,9 +77,9 @@ if [[ -z "$1" ]]; then
     exit 0
 fi
 
-local profile="$1"
-local config_path="$HOME/.aws/config"
-local creds_path="$HOME/.aws/credentials"
+profile="$1"
+config_path="$HOME/.aws/config"
+creds_path="$HOME/.aws/credentials"
 
 # Check if profile exists in either config or credentials
 if ! grep -q "\[profile $profile\]" "$config_path" && ! grep -q "\[$profile\]" "$creds_path" && [[ "$profile" != "default" ]]; then
