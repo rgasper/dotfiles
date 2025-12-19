@@ -1,4 +1,39 @@
 #!/bin/bash
-# peek what's going on in a directory
-function peek() { ls -ltha "${1-.}" | head -n "${2-10}"; }
+# Peek what's going on in a directory
+# Usage: peek [directory] [num-lines]
 
+set -e
+
+show_help() {
+    cat << 'EOF'
+Usage: peek [directory] [num-lines]
+
+Quick directory listing showing the most recent files.
+
+Arguments:
+  directory    Directory to peek into (default: current directory)
+  num-lines    Number of lines to display (default: 10)
+
+Examples:
+  peek                    # Show 10 most recent files in current directory
+  peek /var/log           # Show 10 most recent files in /var/log
+  peek . 20               # Show 20 most recent files in current directory
+  peek ~/Downloads 5      # Show 5 most recent files in Downloads
+
+Output format: ls -ltha (all files, human-readable sizes, sorted by time)
+EOF
+}
+
+# Check for help flag
+if [[ "$1" == "help" || "$1" == "--help" || "$1" == "-h" ]]; then
+    show_help
+    exit 0
+fi
+
+# If no arguments provided, show help
+if [[ -z "$1" ]]; then
+    show_help
+    exit 0
+fi
+
+ls -ltha "${1-.}" | head -n "${2-10}"
