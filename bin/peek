@@ -1,0 +1,4 @@
+#!/bin/bash
+# peek what's going on in a directory
+function peek() { ls -ltha "${1-.}" | head -n "${2-10}"; }
+

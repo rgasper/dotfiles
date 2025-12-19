@@ -1,0 +1,84 @@
+#!/bin/bash
+
+# thanks sam and rory
+function awsenv {
+  # If no profile argument is provided, list all available profiles and show current env
+  if [[ -z "$1" ]]; then
+    echo "📋 Available AWS Profiles:"
+    echo "------------------------"
+
+    # Show current profile if set
+    if [[ -n "$AWS_PROFILE" ]]; then
+      echo "🟢 Current Profile: $AWS_PROFILE"
+      echo "------------------------"
+    fi
+
+    # List profiles from config file
+    if [[ -f "$HOME/.aws/config" ]]; then
+      grep "\[profile" "$HOME/.aws/config" | sed 's/\[profile \(.*\)\]/\1/' | while read -r profile; do
+        if [[ "$profile" == "$AWS_PROFILE" ]]; then
+          echo "  ✓ $profile"
+        else
+          echo "  • $profile"
+        fi
+      done
+    fi
+
+    # Add default profile if it exists in credentials file
+    if [[ -f "$HOME/.aws/credentials" ]] && grep -q "^\[default\]" "$HOME/.aws/credentials"; then
+      if [[ "default" == "$AWS_PROFILE" ]]; then
+        echo "  ✓ default"
+      else
+        echo "  • default"
+      fi
+    fi
+
+    # List other profiles from credentials file
+    if [[ -f "$HOME/.aws/credentials" ]]; then
+      grep "\[" "$HOME/.aws/credentials" | sed 's/\[\(.*\)\]/\1/' | grep -v '^default$' | while read -r profile; do
+        if [[ "$profile" == "$AWS_PROFILE" ]]; then
+          echo "  ✓ $profile"
+        else
+          echo "  • $profile"
+        fi
+      done
+    fi
+    echo "📝 Usage: awsenv <profile-name>"
+    return 0
+  fi
+
+  local profile="$1"
+  local config_path="$HOME/.aws/config"
+  local creds_path="$HOME/.aws/credentials"
+
+  # Check if profile exists in either config or credentials
+  if ! grep -q "\[profile $profile\]" "$config_path" && ! grep -q "\[$profile\]" "$creds_path" && [[ "$profile" != "default" ]]; then
+    echo "❌ Profile '$profile' not found"
+    echo "   Check your AWS configuration files:"
+    echo "   - $config_path"
+    echo "   - $creds_path"
+    return 1
+  fi
+
+  # Set the AWS profile
+  export AWS_PROFILE="$profile"
+  echo "✅ Switched to AWS profile: $AWS_PROFILE"
+
+  # Get caller identity and handle SSO login if needed
+  if ! identity=$(aws sts get-caller-identity --profile "$AWS_PROFILE" --output json 2>/dev/null); then
+    echo "⚠️  Authentication needed, attempting SSO login..."
+    if aws sso login --profile "$AWS_PROFILE"; then
+      echo "✅ SSO login successful"
+      identity=$(aws sts get-caller-identity --profile "$AWS_PROFILE" --output json)
+    else
+      echo "❌ SSO login failed"
+      return 1
+    fi
+  fi
+
+  echo "🔑 Current AWS Identity:"
+  echo "$identity" | jq '. | {Account, Arn}'
+
+  # Update right prompt to show active AWS profile
+  RPROMPT='$( [[ -n $AWS_PROFILE ]] && echo "%F{242}(aws:$AWS_PROFILE)%f" )'
+}

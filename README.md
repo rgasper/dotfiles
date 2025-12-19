@@ -2,6 +2,11 @@
 
 for setting up on a new machine
 
+## bin
+
+[bin](./bin)
+Copy contents to `~/.local/bin`
+
 ## callouts
 
 Terminal things I like:
