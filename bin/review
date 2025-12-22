@@ -1,0 +1,152 @@
+#!/bin/bash
+# Review git diffs by sending them to Claude Code for analysis
+# Usage: review [options] <branch1> [branch2]
+#        review --pr <number>
+
+set -e
+
+show_help() {
+    cat << 'EOF'
+Usage: review [options] <branch1> [branch2]
+       review --pr <number>
+
+Review git diffs by sending them to Claude Code for analysis.
+
+Modes:
+  review branch1 branch2    Show changes from branch1 to branch2
+  review branch1             Show changes from branch1 to current branch
+  review --pr 123            Review GitHub PR #123
+
+The script collects:
+  - The diff between branches
+  - List of all changed files
+
+This context is formatted and piped to Claude Code for review.
+Claude Code will read any files it needs for additional context.
+
+Examples:
+  review main feature-branch
+  review develop
+  review --pr 456
+
+Options:
+  --pr <number>     Review a specific GitHub PR (requires gh CLI)
+  --help, -h, help  Show this help message
+EOF
+}
+
+# Check for help flag
+if [[ "$1" == "help" || "$1" == "--help" || "$1" == "-h" ]]; then
+    show_help
+    exit 0
+fi
+
+# Validate we're in a git repository
+if ! git rev-parse --is-inside-work-tree > /dev/null 2>&1; then
+    echo "Error: Not inside a Git repository." >&2
+    exit 1
+fi
+
+# List all changed files
+list_changed_files() {
+    local branch1="$1"
+    local branch2="$2"
+
+    git diff --name-status "$branch1..$branch2" 2>/dev/null || echo "No files changed"
+}
+
+# Generate the review output
+generate_review_output() {
+    local branch1="$1"
+    local branch2="$2"
+    local diff_output
+    local changed_files
+
+    diff_output=$(git diff "$branch1..$branch2" 2>/dev/null || echo "No diff available")
+    changed_files=$(list_changed_files "$branch1" "$branch2")
+
+    cat << EOF
+=== PROMPT ===
+Review these code changes
+
+=== DIFF ===
+$diff_output
+
+=== CHANGED FILES ===
+$changed_files
+EOF
+}
+
+# Parse arguments and determine mode
+if [[ "$1" == "--pr" ]]; then
+    # PR mode
+    pr_number="${2:?Error: PR number required. Usage: review --pr <number>}"
+
+    # Validate PR number is numeric
+    if ! [[ "$pr_number" =~ ^[0-9]+$ ]]; then
+        echo "Error: PR number must be numeric: $pr_number" >&2
+        exit 1
+    fi
+
+    # Check if gh CLI is installed
+    if ! command -v gh >/dev/null 2>&1; then
+        echo "Error: 'gh' CLI not found. Install it from https://cli.github.com" >&2
+        exit 1
+    fi
+
+    # Validate PR exists
+    if ! gh pr view "$pr_number" >/dev/null 2>&1; then
+        echo "Error: PR #$pr_number not found or not accessible" >&2
+        exit 1
+    fi
+
+    # Get PR branch information
+    pr_branch=$(gh pr view "$pr_number" --json headRefName -q .headRefName)
+    base_branch=$(gh pr view "$pr_number" --json baseRefName -q .baseRefName)
+
+    # Fetch PR branch if not local
+    git fetch origin "$pr_branch:$pr_branch" 2>/dev/null || true
+
+    echo "Reviewing PR #$pr_number: $pr_branch -> $base_branch"
+    generate_review_output "$base_branch" "$pr_branch" | claude code
+
+elif [ $# -eq 2 ]; then
+    # Two branch mode
+    branch1="$1"
+    branch2="$2"
+
+    # Validate branches exist
+    if ! git rev-parse --verify "$branch1" >/dev/null 2>&1; then
+        echo "Error: Branch '$branch1' does not exist" >&2
+        exit 1
+    fi
+
+    if ! git rev-parse --verify "$branch2" >/dev/null 2>&1; then
+        echo "Error: Branch '$branch2' does not exist" >&2
+        exit 1
+    fi
+
+    echo "Reviewing changes from $branch1 to $branch2"
+    generate_review_output "$branch1" "$branch2" | claude code
+
+elif [ $# -eq 1 ]; then
+    # One branch mode - compare provided branch to current HEAD
+    branch1="$1"
+    branch2="HEAD"
+
+    # Validate branch exists
+    if ! git rev-parse --verify "$branch1" >/dev/null 2>&1; then
+        echo "Error: Branch '$branch1' does not exist" >&2
+        exit 1
+    fi
+
+    echo "Reviewing changes from $branch1 to current branch"
+    generate_review_output "$branch1" "$branch2" | claude code
+
+else
+    # Invalid arguments
+    echo "Error: Invalid arguments" >&2
+    echo "" >&2
+    show_help
+    exit 1
+fi
