@@ -94,7 +94,7 @@ ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
 # ------------------
 
 ZIM_HOME=${ZDOTDIR:-${HOME}}/.zim
-# Download zimfw plugin manager if missing.
+# # Download zimfw plugin manager if missing.
 if [[ ! -e ${ZIM_HOME}/zimfw.zsh ]]; then
   if (( ${+commands[curl]} )); then
     curl -fsSL --create-dirs -o ${ZIM_HOME}/zimfw.zsh \
@@ -134,7 +134,9 @@ unset key
 # User Configuration
 # ------------------
 
-
+# openssl installed by brew. xcode-select not including them anymore? who knows.
+export LDFLAGS="-L$(brew --prefix openssl)/lib" 
+export CPPFLAGS="-I$(brew --prefix openssl)/include"
 export TIMEFMT=$'\nreal\t%E\nuser\t%U \nsystem\t%S\nCPU\t%P\nMaxMem\t%M \nAvgMem\t%K'
 
 # export MANPATH="/usr/local/man:$MANPATH"
@@ -159,6 +161,9 @@ export TIMEFMT=$'\nreal\t%E\nuser\t%U \nsystem\t%S\nCPU\t%P\nMaxMem\t%M \nAvgMem
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
 # For a full list of active aliases, run `alias`.
 
+alias mk='minikube'
+alias kc='kubectl'
+alias tf="terraform"
 alias safebash="curl https://raw.githubusercontent.com/rgasper/minimal_safe_bash_script/main/template.sh"
 alias todo="todo.sh"
 alias vi="nvim"
@@ -167,6 +172,7 @@ alias ga="git add"
 alias gps="git push"
 alias gpsu='git push --set-upstream origin $(git rev-parse --abbrev-ref HEAD | tr -d "[:space:]")'
 alias gpl="git pull"
+alias gplrs="git pull --recurse-submodules"
 alias gcm="git commit -m"
 alias wip="git commit --no-verify -m"
 alias wipa="git commit -a --no-verify -m"
@@ -175,7 +181,7 @@ alias grss="git restore --staged"
 alias gco="git checkout"
 alias gs="git status"
 alias gd="git diff"
-alias grom"git reset origin/main"
+alias grom"git reset origin/main || git reset origin/master"
 alias gds="git diff --staged"
 alias dcd="docker compose down"
 alias dcu="docker compose up"
@@ -188,12 +194,10 @@ alias dps="docker ps"
 alias lzd='lazydocker'
 alias gg='lazygit'
 alias la='ls -ltha'
-alias pip-py-lsp='pip install --upgrade pylsp-mypy pyls-isort python-lsp-black pyls-flake8 python-lsp-server python-lsp-black'
-alias poetry-py-lsp='poetry add pylsp-mypy pyls-isort python-lsp-black pyls-flake8 python-lsp-server python-lsp-black'
 alias icat="kitty +kitten icat"
 alias hg="kitty +kitten hyperlinked_grep"
-# anaconda
-source /usr/local/anaconda3/bin/activate
+alias poetry-reinstall='poetry lock --no-cache --regenerate && poetry sync --with dev --no-cache'
+
 
 # aws autocomplete
 # autoload bashcompinit && bashcompinit
@@ -223,31 +227,195 @@ source /usr/local/anaconda3/bin/activate
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
 
-# allow use of oracle cli tools
-export PATH=$PATH:/Applications/Oracle
-export ORACLE_HOME=/Applications/Oracle
-export DYLD_LIBRARY_PATH=/Applications/Oracle
-export TNS_ADMIN=/Applications/Oracle/network/admin
-export CLASSPATH=$CLASSPATH:$ORACLE_HOME
-export NLS_LANG="English_America.UTF8"
-
 
 # homebrew dont install the universe
 export HOMEBREW_NO_INSTALL_CLEANUP=true
+export HOMEBREW_NO_AUTO_UPDATE=1
+export HOMEBREW_NO_ANALYTICS=1
 
-# add poetry to path
+
 export PATH="/Users/raymondgasper/.local/bin:$PATH"
+# libpq homebrew doesnt put in path by default...
+export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
+
+# java brew path, it doesn't do it automatically
+PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
 
 # use helix as default editor
-# export EDITOR=hx  # not ready yet, see #2111
+export EDITOR=hx
 
-# activate z
-. /Users/raymondgasper/Library/z/z.sh # clone of https://github.com/rupa/z
+# something, cannot figure out what, is setting my tmpdir to a special OS-managed directory in /var, breaking shit
+TMPDIR=/tmp/
+
+# Claude Code configuration
+export CLAUDE_CODE_USE_BEDROCK=1
+
+# Ensure Homebrew bin is at the front of the PATH, removing duplicates
+if command -v brew &> /dev/null; then
+  BREW_BIN_PATH="$(brew --prefix)/bin"
+  # Remove existing instances of the brew bin path from PATH
+  # Use awk for robustness with multiple colons or leading/trailing colons
+  export PATH=$(echo $PATH | awk -v RS=':' -v ORS=':' "\$0 != \"$BREW_BIN_PATH\"" | sed 's/:$//')
+  # Prepend the brew bin path
+  export PATH="$BREW_BIN_PATH:$PATH"
+fi
+
+export DOCKER_HOST=$(docker context inspect | jq -r '.[0].Endpoints.docker.Host')
+
+eval "$(direnv hook zsh)"
 
 #######################
 # My Little Functions #
 #######################
 # gitignore curler
 function gi() { curl -sLw n https://www.toptal.com/developers/gitignore/api/$@ ;}
-# peek what's going on in a directory
-function peek() { ls -ltha "${1-.}" | head -n "${2-10}"; }
+# https://github.com/antonmedv/walk
+function lk {
+  cd "$(walk "$@")"
+}
+# from imakira on hackernews
+function frg {
+  result=`rg --ignore-case --color=always --line-number --no-heading "$@" |
+    fzf --ansi \
+        --color 'hl:-1:underline,hl+:-1:underline:reverse' \
+        --delimiter ':' \
+        --preview "bat --color=always {1} --theme='Solarized (light)' --highlight-line {2}" \
+        --preview-window 'up,60%,border-bottom,+{2}+3/3,~3'`
+  file="${result%%:*}"
+  linenumber=`echo "${result}" | cut -d: -f2`
+  if [ ! -z "$file" ]; then
+          $EDITOR +"${linenumber}" "$file"
+  fi
+}
+zstyle ':completion:*' menu select
+fpath+=~/.zfunc
+
+# yazi suggested util to make it quit into the directory you've navigated to
+function y() {
+	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+	yazi "$@" --cwd-file="$tmp"
+	IFS= read -r -d '' cwd < "$tmp"
+	[ -n "$cwd" ] && [ "$cwd" != "$PWD" ] && builtin cd -- "$cwd"
+	rm -f -- "$tmp"
+}
+
+
+function gcors() {
+  local branch="$1"
+  if [ -z "$branch" ]; then
+    echo "Usage: checkout_submodules <branch_name>"
+    return 1
+  fi
+  git submodule foreach --recursive "git checkout $branch && git pull origin $branch"
+}
+
+function tg() {
+  local dir="$PWD"
+
+  if [[ "$dir" == *"devops-terraform-live/environments/platform-development"* ]]; then
+    [[ "$AWS_PROFILE" == "dev" ]] || { echo "ERROR: Must use AWS_PROFILE=dev in platform-development."; return 1; }
+  elif [[ "$dir" == *"devops-terraform-live/environments/central-networking"* ]]; then
+    [[ "$AWS_PROFILE" == "net" ]] || { echo "ERROR: Must use AWS_PROFILE=net in central-networking."; return 1; }
+  elif [[ "$dir" == *"devops-terraform-live/environments/platform-production"* ]]; then
+    [[ "$AWS_PROFILE" == "prod" ]] || { echo "ERROR: Must use AWS_PROFILE=prod in platform-production."; return 1; }
+  fi
+
+  command terragrunt "$@"
+}
+
+# thanks sam and rory
+function awsenv {
+  # If no profile argument is provided, list all available profiles and show current env
+  if [[ -z "$1" ]]; then
+    echo "📋 Available AWS Profiles:"
+    echo "------------------------"
+
+    # Show current profile if set
+    if [[ -n "$AWS_PROFILE" ]]; then
+      echo "🟢 Current Profile: $AWS_PROFILE"
+      echo "------------------------"
+    fi
+
+    # List profiles from config file
+    if [[ -f "$HOME/.aws/config" ]]; then
+      grep "\[profile" "$HOME/.aws/config" | sed 's/\[profile \(.*\)\]/\1/' | while read -r profile; do
+        if [[ "$profile" == "$AWS_PROFILE" ]]; then
+          echo "  ✓ $profile"
+        else
+          echo "  • $profile"
+        fi
+      done
+    fi
+
+    # Add default profile if it exists in credentials file
+    if [[ -f "$HOME/.aws/credentials" ]] && grep -q "^\[default\]" "$HOME/.aws/credentials"; then
+      if [[ "default" == "$AWS_PROFILE" ]]; then
+        echo "  ✓ default"
+      else
+        echo "  • default"
+      fi
+    fi
+
+    # List other profiles from credentials file
+    if [[ -f "$HOME/.aws/credentials" ]]; then
+      grep "\[" "$HOME/.aws/credentials" | sed 's/\[\(.*\)\]/\1/' | grep -v '^default$' | while read -r profile; do
+        if [[ "$profile" == "$AWS_PROFILE" ]]; then
+          echo "  ✓ $profile"
+        else
+          echo "  • $profile"
+        fi
+      done
+    fi
+    echo "📝 Usage: awsenv <profile-name>"
+    return 0
+  fi
+
+  local profile="$1"
+  local config_path="$HOME/.aws/config"
+  local creds_path="$HOME/.aws/credentials"
+
+  # Check if profile exists in either config or credentials
+  if ! grep -q "\[profile $profile\]" "$config_path" && ! grep -q "\[$profile\]" "$creds_path" && [[ "$profile" != "default" ]]; then
+    echo "❌ Profile '$profile' not found"
+    echo "   Check your AWS configuration files:"
+    echo "   - $config_path"
+    echo "   - $creds_path"
+    return 1
+  fi
+
+  # Set the AWS profile
+  export AWS_PROFILE="$profile"
+  echo "✅ Switched to AWS profile: $AWS_PROFILE"
+
+  # Get caller identity and handle SSO login if needed
+  if ! identity=$(aws sts get-caller-identity --profile "$AWS_PROFILE" --output json 2>/dev/null); then
+    echo "⚠️  Authentication needed, attempting SSO login..."
+    if aws sso login --profile "$AWS_PROFILE"; then
+      echo "✅ SSO login successful"
+      identity=$(aws sts get-caller-identity --profile "$AWS_PROFILE" --output json)
+    else
+      echo "❌ SSO login failed"
+      return 1
+    fi
+  fi
+
+  echo "🔑 Current AWS Identity:"
+  echo "$identity" | jq '. | {Account, Arn}'
+
+  # Update right prompt to show active AWS profile
+  RPROMPT='$( [[ -n $AWS_PROFILE ]] && echo "%F{242}(aws:$AWS_PROFILE)%f" )'
+}
+
+
+#########################
+#         pixi          #
+#########################
+eval "$(pixi completion --shell zsh)"
+mkdir -p $HOME/.pixi-tmp
+alias pixi="TMPDIR=$HOME/.pixi-tmp pixi"
+
+
+#############
+# shellenvs #
+#############
+source <(tree-me shellenv)
