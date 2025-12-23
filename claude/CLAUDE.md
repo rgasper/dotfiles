@@ -1,12 +1,6 @@
-# AGENTS.md. Enko agents file.
-*Last updated 2025-10-15*
-
-> **purpose** – This file is the onboarding manual for every AI assistant (Claude, Cursor, GPT, etc.) and every human who edits this repository.
-> It encodes our coding standards, guard-rails, and workflow tricks so the *human 30 %* (architecture, tests, domain judgment) stays in human hands.
+# AGENTS.md
 
 ---
-
-You are an amplifier to my typing, not intended to be use in full read - edit - test loops. Running bash commands for finding and reading files, text, or data is fine, but do not run linting, formatting, or testing commands.
 
 Never use exclamation points. Keep tone dry. Avoid congratulation, flattery, and sycophancy.
 
@@ -23,9 +17,6 @@ read the [README](README.md)! It explains a lot about this repository, including
 | #: | AI *may* do                                                            | AI *must NOT* do                                                                    |
 |---|------------------------------------------------------------------------|-------------------------------------------------------------------------------------|
 | G-0 | Whenever unsure about something that's related to the project, ask the developer for clarification before making changes.    |  ❌ Write changes or use tools when you are not sure about something project specific, or if you don't have context for a particular feature/decision. |
-| G-1 | Generate code **only inside** relevant source directories (e.g., `applications/webservers/enkotools` for the ointernal webserver and core databsae, `libraries/enko/` for any 'fancy' code that's not directly related to an interface (UI/CLI) or external datasource, `clients` for scripts we upload to client software like schrodinger livedesign) or explicitly pointed files.    | ❌ Touch `*/tests/`, `*test*.py`  files (humans own tests). |
-| G-2 | Add/update **`AIDEV-NOTE:` anchor comments** near non-trivial edited code. | ❌ Delete or mangle existing `AIDEV-` comments.                                     |
-| G-3 | Foramtting will be handled automatically by a formatter run during git commit, or by the IDE. Don't try to do formatting yourself! | ❌ Re-format code to any other style.                                               |
 
 ---
 
@@ -63,39 +54,11 @@ When including a new docker image, or working on an existing image, check for a 
 
 ---
 
-
-## 4. Anchor comments
-
-Add specially formatted comments throughout the codebase, where appropriate, for yourself as inline knowledge that can be easily `grep`ped for.
-
-### Guidelines:
-
-- Use `AIDEV-NOTE:`, `AIDEV-TODO:`, or `AIDEV-QUESTION:` (all-caps prefix) for comments aimed at AI and developers.
-- Keep them concise (≤ 120 chars).
-- **Important:** Before scanning files, always first try to **locate existing anchors** `AIDEV-*` in relevant subdirectories.
-- **Update relevant anchors** when modifying associated code.
-- **Do not remove `AIDEV-NOTE`s** without explicit human instruction.
-- Make sure to add relevant anchor comments, whenever a file or piece of code is:
-  * too long, or
-  * too complex, or
-  * very important, or
-  * confusing, or
-  * could have a bug unrelated to the task you are currently working on.
-
-Example:
-```python
-# AIDEV-NOTE: perf-hot-path; avoid extra allocations (see ADR-24)
-async def render_feed(...):
-    ...
-```
-
----
-
-## 5. Commits and other operations
+## 4. Commits and other operations
 *   **Don't do them!** When finished with coding tasks, simply confirm success and wait for feedback.
 
 ---
 
-## 6. Directory-Specific AGENTS.md Files
+## 5. Directory-Specific AGENTS.md Files
 
 *   **Always check for `AGENTS.md` files in specific directories** before working on code within them. These files contain targeted context.
