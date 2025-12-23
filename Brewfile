@@ -38,5 +38,5 @@ brew "mdless"
 brew "marp-cli"
 brew "md2pdf"
 brew "gh"
-brew "asciinema"
+brew "asciinema"  # note install agg as well for gifs: https://github.com/asciinema/agg
 brew "rust"
