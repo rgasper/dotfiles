@@ -418,4 +418,4 @@ alias pixi="TMPDIR=$HOME/.pixi-tmp pixi"
 #############
 # shellenvs #
 #############
-source <(tree-me shellenv)
+# source <(tree-me shellenv)  # giving an annoying error on shell startup about not being in a git repo
