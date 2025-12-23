@@ -15,3 +15,4 @@ Terminal things I like:
 - [zimfw](https://zimfw.sh/)
 - [zsh](https://www.zsh.org/)
 - [helix](https://helix-editor.com)
+- [snitch](https://github.com/karol-broda/snitch)

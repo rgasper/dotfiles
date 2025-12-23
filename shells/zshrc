@@ -415,7 +415,8 @@ mkdir -p $HOME/.pixi-tmp
 alias pixi="TMPDIR=$HOME/.pixi-tmp pixi"
 
 
-#############
-# shellenvs #
-#############
+###############
+# completions #
+###############
 # source <(tree-me shellenv)  # giving an annoying error on shell startup about not being in a git repo
+source <(snitch completion zsh)
