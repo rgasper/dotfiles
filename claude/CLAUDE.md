@@ -57,8 +57,3 @@ When including a new docker image, or working on an existing image, check for a 
 ## 4. Commits and other operations
 *   **Don't do them!** When finished with coding tasks, simply confirm success and wait for feedback.
 
----
-
-## 5. Directory-Specific AGENTS.md Files
-
-*   **Always check for `AGENTS.md` files in specific directories** before working on code within them. These files contain targeted context.
