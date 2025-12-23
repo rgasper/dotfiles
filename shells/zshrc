@@ -406,6 +406,7 @@ function awsenv {
   RPROMPT='$( [[ -n $AWS_PROFILE ]] && echo "%F{242}(aws:$AWS_PROFILE)%f" )'
 }
 
+awsenv dev
 
 #########################
 #         pixi          #
@@ -420,3 +421,7 @@ alias pixi="TMPDIR=$HOME/.pixi-tmp pixi"
 ###############
 # source <(tree-me shellenv)  # giving an annoying error on shell startup about not being in a git repo
 source <(snitch completion zsh)
+source /Users/raymondgasper/Documents/enko/enko-teken/enko_commands.sh
+
+
+
