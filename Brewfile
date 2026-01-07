@@ -41,3 +41,4 @@ brew "gh"
 brew "asciinema"  # note install agg as well for gifs: https://github.com/asciinema/agg
 brew "rust"
 brew "lazygit"
+# brew "1password-cli"  # this doesn't work. dunno why. Just run `brew install 1password-cli`
