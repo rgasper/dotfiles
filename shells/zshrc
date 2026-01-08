@@ -420,3 +420,9 @@ alias pixi="TMPDIR=$HOME/.pixi-tmp pixi"
 # source <(tree-me shellenv)  # giving an annoying error on shell startup about not being in a git repo
 source <(snitch completion zsh)
 eval "$(op completion zsh)"; compdef _op op
+
+
+######################
+# 1 password plugins #
+######################
+source /Users/raymondgasper/.config/op/plugins.sh
