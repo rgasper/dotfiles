@@ -34,7 +34,6 @@ brew "yaml-language-server"
 brew "tombi"
 brew "d2"
 cask "font-iosevka"
-brew "mdless"
 brew "marp-cli"
 brew "md2pdf"
 brew "gh"
@@ -42,3 +41,4 @@ brew "asciinema"  # note install agg as well for gifs: https://github.com/asciin
 brew "rust"
 brew "lazygit"
 # brew "1password-cli"  # this doesn't work. dunno why. Just run `brew install 1password-cli`
+brew "glow"
