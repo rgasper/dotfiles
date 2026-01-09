@@ -7,6 +7,14 @@ for setting up on a new machine
 [bin](./bin)
 Copy contents to `~/.local/bin`
 
+## pystuff
+
+a `uv` pyproject of packages I like using
+
+## shells
+
+[shells](./shells) - shell config; copy to ~/.{SHELL}rc
+
 ## callouts
 
 Terminal things I like:
