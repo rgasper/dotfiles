@@ -1,0 +1,1 @@
+- [Superpowers](https://github.com/obra/superpowers/blob/main/docs/README.opencode.md)
