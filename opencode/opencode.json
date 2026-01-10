@@ -18,5 +18,11 @@
         "KAGI_API_KEY": "SECRETSECRET"
       }
     }
+  },
+  "agent": {
+    "explore": {
+      "mode": "subagent",
+      "model": "amazon-bedrock/anthropic.claude-haiku-4-5-20251001-v1:0",
+    }
   }
 }
