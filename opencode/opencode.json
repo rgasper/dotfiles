@@ -19,10 +19,32 @@
       }
     }
   },
+  "default_agent": "plan",
   "agent": {
+    "plan": {
+      "mode": "primary",
+      "model": "amazon-bedrock/anthropic.claude-opus-4-5-20251101-v1:0",
+      "tools": {
+        "write": false
+      },
+      "permission":{
+        "bash": "ask"
+      }
+    },
+    "build": {
+      "mode": "primary",
+      "model": "amazon-bedrock/anthropic.claude-opus-4-5-20251101-v1:0",
+    },
     "explore": {
+      "description": "explores codebase and summarizes findings",
       "mode": "subagent",
       "model": "amazon-bedrock/anthropic.claude-haiku-4-5-20251001-v1:0",
+      "tools": {
+        "write": false
+      },
+      "permission":{
+        "bash": "ask"
+      }
     }
   },
   "lsp": {
