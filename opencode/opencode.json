@@ -3,7 +3,8 @@
   "permission": {
     "*": "allow",
     "webfetch": "ask",
-    "kagimcp_kagi_search_fetch": "ask"
+    "kagimcp_kagi_search_fetch": "ask",
+    "bash": "ask"
   },
   "mcp": {
     "context7": {
@@ -29,47 +30,82 @@
     "plan": {
       "mode": "primary",
       "model": "amazon-bedrock/anthropic.claude-opus-4-5-20251101-v1:0",
+      "prompt": "Help investigate and plan this work. for exploring, do some initial probes and high level scans, then break down the larger question into focused, smaller questions which can be delegated to explorer subagents. combine their summaries, with spot checks of details for critical findings, to form the final summary. Utilize brainstorming, writing-plans, and dispatching-parallel-agents skills. Utilize language servers, context7, and as final resort kagi web search to gather facts and reference material. If instructed to get information about a project or ticket, delegate that out to the project_manager subagent. If a subagent has questions, repeat the questions yourself then send the answers back to the subagent.",
       "tools": {
         "write": false,
         "edit": false,
         "linear*": false,
       },
-      "permission":{
-        "bash": "ask"
+      "permission": {
+        "task": {
+          "*": "deny",
+          "explorer": "allow",
+          "project_manager": "allow",
+        }
       }
     },
-    "build": {
-      "mode": "primary",
-      "model": "amazon-bedrock/anthropic.claude-opus-4-5-20251101-v1:0",
-      "tools": {
-        "linear*": false
-      },
-    },
-    "explore": {
-      "description": "explores codebase and summarizes findings",
+    "explorer": {
+      "description": "explorers codebase and summarizes findings",
       "mode": "subagent",
       "model": "amazon-bedrock/anthropic.claude-haiku-4-5-20251001-v1:0",
       "tools": {
         "write": false,
         "edit": false,
         "linear*": false,
+        "kagi*": false,
+        "context7*": false,
       },
-      "permission":{
-        "bash": "ask"
+      "permission": {
+        "task": {
+          "*": "deny",
+          "explorer": "allow",
+          "project_manager": "allow",
+        }
+      }
+    },
+    "build": {
+      "mode": "primary",
+      "model": "amazon-bedrock/anthropic.claude-opus-4-5-20251101-v1:0",
+      "prompt": "Help implement these changes. Break up the work into independent units, with particular attention to which tasks go to which files. Then delegate performing each task with very explicit instruction about which edits should be made to which files to writer subagents. tell them which directory to open for their workspace. Afterwards, delegate the code-reviewer subagent to review the changes for compatibility and code quality, run tests and refactor or rework until you're satisfied the holistic project is completed. If there's test failures, use systematic-debugger skill to address and rework the plan before the next set of code writing/editing. Utilize any and all testing, code quality, or reviewing skills. Utilize executing-plans, subagent-driven-development, dispatching-parallel-agents, test-driven-development skills. Utilize language servers, context7, and as final resort kagi web search to gather facts and reference material. If instructed to get information about a project or ticket, delegate that out to the project_manager subagent. If a subagent has questions, repeat the questions yourself then send the answers back to the subagent.",
+      "tools": {
+        "linear*": false
+      },
+      "permission": {
+        "task": {
+          "*": "deny",
+          "writer": "allow",
+          "project_manager": "allow",
+        }
+      }
+    },
+    "writer": {
+      "mode": "subagent",
+      "model": "amazon-bedrock/anthropic.claude-haiku-4-5-20251001-v1:0",
+      "prompt": "adhere very closely to instructions. do not modify files other than what is explicitly instructed. very concisely summarize your changes when complete with reference to original instructions. do not run tests - make your edits, validate syntax and code quality, then finish.",
+      "tools": {
+        "linear*": false,
+        "kagi*": false,
+        "context7*": false,
+      },
+      "permission": {
+        "task": {
+          "*": "deny",
+        }
       }
     },
     "project_manager": {
       "description": "reads and writes tickets & projects",
       "mode": "subagent",
       "model": "amazon-bedrock/anthropic.claude-opus-4-5-20251101-v1:0",
+      "prompt": "help frame work, scope projects, describe issues, and goals. No writing code here! Push back on requests to get into details on implementations. Focus on higher level - architecture, design, workflow, stakeholders, company goals. Always ask for context on who or what are constraints in these categories. Who cares about this work? what goal does it contribute to? are there blockers externally, or interdependencies between tasks?",
       "tools": {
-        "write": false,
-        "edit": false,
-        "linear*": true,
+        "context7*": false,
       },
-      "permission":{
-        "bash": "ask"
-      },
+      "permission": {
+        "task": {
+          "*": "deny",
+        }
+      }
     }
   },
   "lsp": {
