@@ -17,6 +17,11 @@
       "environment": {
         "KAGI_API_KEY": "SECRETSECRET"
       }
+    },
+    "linear": {
+      "type": "local",
+      "command": ["npx", "-y", "mcp-remote", "https://mcp.linear.app/mcp"],
+      "enabled": true,
     }
   },
   "default_agent": "plan",
@@ -25,7 +30,9 @@
       "mode": "primary",
       "model": "amazon-bedrock/anthropic.claude-opus-4-5-20251101-v1:0",
       "tools": {
-        "write": false
+        "write": false,
+        "edit": false,
+        "linear*": false,
       },
       "permission":{
         "bash": "ask"
@@ -34,17 +41,35 @@
     "build": {
       "mode": "primary",
       "model": "amazon-bedrock/anthropic.claude-opus-4-5-20251101-v1:0",
+      "tools": {
+        "linear*": false
+      },
     },
     "explore": {
       "description": "explores codebase and summarizes findings",
       "mode": "subagent",
       "model": "amazon-bedrock/anthropic.claude-haiku-4-5-20251001-v1:0",
       "tools": {
-        "write": false
+        "write": false,
+        "edit": false,
+        "linear*": false,
       },
       "permission":{
         "bash": "ask"
       }
+    },
+    "project_manager": {
+      "description": "reads and writes tickets & projects",
+      "mode": "subagent",
+      "model": "amazon-bedrock/anthropic.claude-opus-4-5-20251101-v1:0",
+      "tools": {
+        "write": false,
+        "edit": false,
+        "linear*": true,
+      },
+      "permission":{
+        "bash": "ask"
+      },
     }
   },
   "lsp": {
