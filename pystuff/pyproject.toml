@@ -7,6 +7,7 @@ requires-python = ">=3.14"
 dependencies = [
     "dataframely>=2.4.0",
     "django>=6.0.1",
+    "filelock>=3.20.2",
     "joblib>=1.5.3",
     "loguru>=0.7.3",
     "polars>=1.36.1",
