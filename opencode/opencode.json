@@ -2,8 +2,8 @@
   "$schema": "https://opencode.ai/config.json",
   "permission": {
     "*": "allow",
-    "webfetch": "ask",
-    "kagimcp_kagi_search_fetch": "ask",
+    "web*": "ask",
+    "kagi*": "ask",
     "bash": "ask"
   },
   "mcp": {
@@ -33,7 +33,6 @@
       "mode": "primary",
       "model": "amazon-bedrock/anthropic.claude-opus-4-5-20251101-v1:0",
       "tools": {
-        "*": true,
         "linear*": false,
       }
     },
