@@ -45,3 +45,4 @@ brew "glow"
 tap "anomalyco/tap"
 brew "anomalyco/tap/opencode"
 cask "xquartz"  # for v3cd
+brew "pandoc"
