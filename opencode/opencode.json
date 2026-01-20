@@ -33,6 +33,9 @@
     "build": {
       "disable": true
     },
+    "general": {
+      "disable": true
+    },
     "jack": {
       "description": "does it all",
       "prompt": "Be concise! delegate questions on looking up or modifying tickets or projects to project_manager subagent.",
