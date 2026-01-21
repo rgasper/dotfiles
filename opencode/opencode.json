@@ -4,7 +4,18 @@
     "*": "allow",
     "web*": "ask",
     "kagi*": "ask",
-    "bash": "ask"
+    "bash": {
+      "*": "ask",
+      "wc*": "allow",
+      "head*": "allow",
+      "rg*": "allow",
+      "cat*": "allow",
+      "echo*": "allow",
+      "grep*": "allow",
+      "git diff*": "allow",
+      "git show*": "allow",
+      "cd*": "allow",
+    }
   },
   "mcp": {
     "context7": {
