@@ -17,6 +17,8 @@
       "cd*": "allow",
       "docker ps*": "allow",
       "docker-compose*": "allow",
+      "ls*": "allow",
+      "test*": "allow",
     }
   },
   "mcp": {
