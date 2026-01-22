@@ -35,7 +35,6 @@ brew "tombi"
 brew "d2"
 cask "font-iosevka"
 brew "marp-cli"
-brew "md2pdf"
 brew "gh"
 brew "asciinema"  # note install agg as well for gifs: https://github.com/asciinema/agg
 brew "rust"
