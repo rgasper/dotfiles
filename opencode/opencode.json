@@ -55,10 +55,11 @@
     },
     "jack": {
       "description": "does it all",
-      "prompt": "Be concise! delegate questions on looking up or modifying tickets or projects to project_manager subagent.",
+      "prompt": "Be concise! Be helpful. delegate questions on looking up or modifying tickets or projects to project_manager subagent.",
       "mode": "primary",
       "model": "amazon-bedrock/anthropic.claude-opus-4-5-20251101-v1:0",
       "tools": {
+        "*": true
         "linear*": false,
       },
       "permission": {
