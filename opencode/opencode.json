@@ -8,6 +8,7 @@
       "*": "ask",
       "wc*": "allow",
       "head*": "allow",
+      "tail*": "allow",
       "rg*": "allow",
       "cat*": "allow",
       "echo*": "allow",
@@ -20,6 +21,7 @@
       "ls*": "allow",
       "test*": "allow",
       "cp*": "allow",
+      "poe*": "allow",
     }
   },
   "mcp": {
