@@ -10,7 +10,6 @@
       "head*": "allow",
       "tail*": "allow",
       "rg*": "allow",
-      "cat*": "allow",
       "echo*": "allow",
       "grep*": "allow",
       "git diff*": "allow",
