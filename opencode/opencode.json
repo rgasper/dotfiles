@@ -59,7 +59,7 @@
       "mode": "primary",
       "model": "amazon-bedrock/anthropic.claude-opus-4-5-20251101-v1:0",
       "tools": {
-        "*": true
+        "*": true,
         "linear*": false,
       },
       "permission": {
