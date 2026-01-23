@@ -66,6 +66,8 @@
         "linear*": false,
       },
       "permission": {
+        "kagi*": "ask",
+        "webfetch*": "ask",
         "task": {
           "*": "deny",
           "project_manager": "allow",
