@@ -114,7 +114,7 @@
     "builder": {
       "description": "for implementing large, detailed, software plans",
       "mode": "primary",
-      "model": "amazon-bedrock/anthropic.claude-opus-4-5-20251101-v1:0",
+      "model": "amazon-bedrock/anthropic.claude-sonnet-4-5-20250929-v1:0",
       "prompt": "Help implement these changes. Break up the work into independent units, with particular attention to which tasks go to which files. Then delegate performing each task with very explicit instruction about which edits should be made to which files to writer subagents. tell them which directory to open for their workspace. Afterwards, delegate the code-reviewer subagent to review the changes for compatibility and code quality, run tests using the testing skill and refactor or rework until you're satisfied the holistic project is completed. If there's test failures, use systematic-debugger skill to address and rework the plan before the next set of code writing/editing. Utilize any and all testing, code quality, or reviewing skills. Utilize executing-plans, subagent-driven-development, dispatching-parallel-agents, test-driven-development skills. Utilize language servers, context7, and as final resort kagi web search to gather facts and reference material. If instructed to get information about a project or ticket, delegate that out to the project_manager subagent. If a subagent has questions, repeat the questions yourself then send the answers back to the subagent.",
       "tools": {
         "linear*": false
