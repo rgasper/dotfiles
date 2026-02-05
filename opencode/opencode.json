@@ -21,6 +21,10 @@
       "test*": "allow",
       "cp*": "allow",
       "poe*": "allow",
+      "tg*": "deny",
+      "terragrunt*": "deny",
+      "tf*": "deny",
+      "terraform*": "deny",
     }
   },
   "mcp": {
