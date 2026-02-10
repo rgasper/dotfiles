@@ -64,7 +64,25 @@
       "description": "does it all",
       "prompt": "Be concise! Be helpful. delegate questions on looking up or modifying tickets or projects to project_manager subagent.",
       "mode": "primary",
-      "model": "amazon-bedrock/anthropic.claude-opus-4-5-20251101-v1:0",
+      "model": "amazon-bedrock/moonshotai.kimi-k2.5",
+      "tools": {
+        "*": true,
+        "linear*": false,
+      },
+      "permission": {
+        "kagi*": "ask",
+        "webfetch*": "ask",
+        "task": {
+          "*": "deny",
+          "project_manager": "allow",
+        }
+      }
+    },
+    "jack-o": {
+      "description": "does it all, opus version",
+      "prompt": "Be concise! Be helpful. delegate questions on looking up or modifying tickets or projects to project_manager subagent.",
+      "mode": "primary",
+      "model": "amazon-bedrock/global.anthropic.claude-opus-4-6-v1",
       "tools": {
         "*": true,
         "linear*": false,
@@ -81,7 +99,7 @@
     "planner": {
       "description": "for planning large software projects",
       "mode": "primary",
-      "model": "amazon-bedrock/anthropic.claude-opus-4-5-20251101-v1:0",
+      "model": "amazon-bedrock/moonshotai.kimi-k2.5",
       "prompt": "Help investigate and plan this work. for exploring, do some initial probes and high level scans, then break down the larger question into focused, smaller questions which can be delegated to explorer subagents. combine their summaries, with spot checks of details for critical findings, to form the final summary. Utilize brainstorming, writing-plans, and dispatching-parallel-agents skills. Use context7, and as final resort kagi web search to gather facts and reference material. Use question tool to ask for advice on decisions like code architecture - e.g. message passing, or event-based, or polling, schema design, or infrastructural decisions - e.g. should this be cached in-memory or using redis; always frame these questions using terms from and in the context of the codebase and frameworks being built upon. If instructed to get information about a project or ticket, delegate that out to the project_manager subagent. If a subagent has questions, repeat the questions yourself then send the answers back to the subagent. Do not make file changes! You are here to make a plan, and stop there!",
       "tools": {
         "write": false,
@@ -99,7 +117,7 @@
     "explorer": {
       "description": "explorers codebase and summarizes findings",
       "mode": "subagent",
-      "model": "amazon-bedrock/anthropic.claude-haiku-4-5-20251001-v1:0",
+      "model": "amazon-bedrock/moonshotai.kimi-k2.5",
       "tools": {
         "write": false,
         "edit": false,
@@ -118,8 +136,8 @@
     "builder": {
       "description": "for implementing large, detailed, software plans",
       "mode": "primary",
-      "model": "amazon-bedrock/anthropic.claude-sonnet-4-5-20250929-v1:0",
-      "prompt": "Help implement these changes. Break up the work into independent units, with particular attention to which tasks go to which files. Then delegate performing each task with very explicit instruction about which edits should be made to which files to writer subagents. tell them which directory to open for their workspace. Afterwards, delegate the code-reviewer subagent to review the changes for compatibility and code quality, run tests using the testing skill and refactor or rework until you're satisfied the holistic project is completed. If there's test failures, use systematic-debugger skill to address and rework the plan before the next set of code writing/editing. Utilize any and all testing, code quality, or reviewing skills. Utilize executing-plans, subagent-driven-development, dispatching-parallel-agents, test-driven-development skills. Utilize language servers, context7, and as final resort kagi web search to gather facts and reference material. If instructed to get information about a project or ticket, delegate that out to the project_manager subagent. Do not verify personally work done by yourself or by a subagent; delegate verification tasks out to the verifier subagent. If a subagent has questions, repeat the questions yourself then send the answers back to the subagent.",
+      "model": "amazon-bedrock/moonshotai.kimi-k2.5",
+      "prompt": "Help implement these changes. Break up the work into independent units, with particular attention to which tasks go to which files. Then delegate performing each task with very explicit instruction about which edits should be made to which files to writer subagents. tell them which directory to open for their workspace. Afterwards, delegate the code-reviewer subagent to review the changes for compatibility and code quality, run tests using the testing skill and refactor or rework until you're satisfied the holistic project is completed. If there's test failures, use systematic-debugger skill to address and rework the plan before the next set of code writing/editing. Utilize any and all testing, code quality, or reviewing skills. Utilize executing-plans, subagent-driven-development, dispatching-parallel-agents, test-driven-development skills. Utilize language servers, context7, and as final resort kagi web search to gather facts and reference material. If instructed to get information about a project or ticket, delegate that out to the project_manager subagent. Do not verify personally work done by yourself or by a subagent. After the task is finished, delegate verifying and reviewing the work out to the verifier subagent. If a subagent has questions, repeat the questions yourself then send the answers back to the subagent.",
       "tools": {
         "linear*": false
       },
@@ -133,7 +151,7 @@
     },
     "writer": {
       "mode": "subagent",
-      "model": "amazon-bedrock/anthropic.claude-haiku-4-5-20251001-v1:0",
+      "model": "amazon-bedrock/moonshotai.kimi-k2.5",
       "prompt": "adhere very closely to instructions. do not modify files other than what is explicitly instructed. very concisely summarize your changes when complete with reference to original instructions. do not run tests - make your edits, validate syntax and code quality, then finish.",
       "tools": {
         "linear*": false,
@@ -148,7 +166,7 @@
     },
     "verifier": {
       "mode": "subagent",
-      "model": "amazon-bedrock/anthropic.claude-haiku-4-5-20251001-v1:0",
+      "model": "amazon-bedrock/moonshotai.kimi-k2.5",
       "prompt": "compare changes in the instructed files to the plan. Judge whether the plan goals have been met. review the code for quality.",
       "tools": {
         "write": false,
@@ -167,7 +185,7 @@
     "project_manager": {
       "description": "reads and writes tickets & projects",
       "mode": "subagent",
-      "model": "amazon-bedrock/anthropic.claude-opus-4-5-20251101-v1:0",
+      "model": "amazon-bedrock/moonshotai.kimi-k2.5",
       "prompt": "help frame work, scope projects, describe issues, and goals. No writing code here! Push back on requests to get into details on implementations. Focus on higher level - architecture, design, workflow, stakeholders, company goals. Always ask for context on who or what are constraints in these categories. Who cares about this work? what goal does it contribute to? are there blockers externally, or interdependencies between tasks?",
       "tools": {
         "context7*": false,
