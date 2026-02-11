@@ -44,6 +44,23 @@
       "type": "local",
       "command": ["npx", "-y", "mcp-remote", "https://mcp.linear.app/mcp"],
       "enabled": true,
+    },
+    "enkodb": {
+      "type": "local",
+      "command": [
+        "docker",
+        "run",
+        "-i",
+        "--rm",
+        "-e",
+        "DATABASE_URI",
+        "crystaldba/postgres-mcp",
+        "--access-mode=unrestricted"
+      ],
+      "environment": {
+        "DATABASE_URI": "postgresql://SECRETSECRET"
+      },
+      "enabled": true,
     }
   },
   "default_agent": "jack",
