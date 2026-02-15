@@ -1,8 +1,0 @@
-[behavior]
-use-uv = true
-global-python = "false"
-
-[default]
-toolchain = "cpython@3.12"
-build-system = "pdm"
-dependency-operator = "~="
