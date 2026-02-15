@@ -24,3 +24,11 @@ Terminal things I like:
 - [zsh](https://www.zsh.org/)
 - [helix](https://helix-editor.com)
 - [snitch](https://github.com/karol-broda/snitch)
+
+## web dev things
+
+- [django](https://www.djangoproject.com/)
+- [django-ninja](https://django-ninja.dev/)
+- [htmx](https://htmx.org/)
+- [oat](https://oat.ink/)
+- [wakaq](https://github.com/wakatime/wakaq)
