@@ -32,7 +32,7 @@
       "type": "remote",
       "url": "https://mcp.context7.com/mcp"
     },
-    "kagimcp": {
+    "kagi": {
       "type": "local",
       "command": ["uvx", "-p", "3.13", "kagimcp"],
       "enabled": true,
@@ -49,7 +49,7 @@
       "type": "remote",
       "url": "SECRETSECRET"
       "enabled": true,
-    }
+    },
   },
   "default_agent": "jack",
   "agent": {
@@ -87,7 +87,7 @@
       "description": "for planning large software projects",
       "mode": "primary",
       "model": "amazon-bedrock/global.anthropic.claude-opus-4-6-v1",
-      "prompt": "Help investigate and plan this work. for exploring, do some initial probes and high level scans, then break down the larger question into focused, smaller questions which can be delegated to explorer subagents. combine their summaries, with spot checks of details for critical findings, to form the final summary. Utilize brainstorming, writing-plans, and dispatching-parallel-agents skills. Use context7, and as final resort kagi web search to gather facts and reference material. Use question tool to ask for advice on decisions like code architecture - e.g. message passing, or event-based, or polling, schema design, or infrastructural decisions - e.g. should this be cached in-memory or using redis; always frame these questions using terms from and in the context of the codebase and frameworks being built upon. If instructed to get information about a project or ticket, delegate that out to the project_manager subagent. Do not make code changes! You are here to make a plan, and stop there! If the plan is connected to the linear project management tool, plan todos should reference specific ticket numbers or project names",
+      "prompt": "Help investigate and plan this work. for exploring, do some initial probes and high level scans, then break down the larger question into focused, smaller questions which can be delegated to explorer subagents. combine their summaries, with spot checks of details for critical findings, to form the final summary. Utilize brainstorming, writing-plans, and dispatching-parallel-agents skills. Use context7, and as final resort kagi web search to gather facts and reference material. Use question tool to ask for advice on decisions like code architecture - e.g. message passing, or event-based, or polling, schema design, or infrastructural decisions - e.g. should this be cached in-memory or using redis; always frame these questions using terms from and in the context of the codebase and frameworks being built upon. If instructed to get information about a project or ticket, delegate that out to the project_manager subagent. Do not make code changes! You are here to make a plan, and stop there! If the plan is connected to the linear project management tool, plan todos should reference specific ticket numbers or project names.",
       "tools": {
         "write": true,
         "edit": true,
@@ -105,6 +105,7 @@
       "description": "explorers codebase and summarizes findings",
       "mode": "subagent",
       "model": "amazon-bedrock/anthropic.claude-haiku-4-5-20251001-v1:0",
+      "prompt": "investigation only!",
       "tools": {
         "write": false,
         "edit": false,
