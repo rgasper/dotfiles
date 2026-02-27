@@ -25,6 +25,7 @@
       "terragrunt*": "deny",
       "tf*": "deny",
       "terraform*": "deny",
+      "python3 -m py_compile": "allow",
     }
   },
   "mcp": {
@@ -92,6 +93,7 @@
         "write": true,
         "edit": true,
         "linear*": false,
+        "bash": false,
       },
       "permission": {
         "task": {
