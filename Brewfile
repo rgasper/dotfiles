@@ -46,4 +46,4 @@ brew "anomalyco/tap/opencode"
 cask "xquartz"  # for v3cd
 brew "pandoc"
 tap "pantsbuild/tap"
-brew "pantsbuild/tap/pants"
+brew "git-delta"
