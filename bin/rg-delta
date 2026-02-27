@@ -1,0 +1,54 @@
+#!/bin/bash
+# Ripgrep with context, piped through delta for syntax-highlighted output
+# Usage: rg-delta <pattern> [rg-options...]
+
+set -e
+
+show_help() {
+    cat << 'EOF'
+Usage: rg-delta <pattern> [rg-options...]
+
+Search for a pattern using ripgrep with JSON output and 2 lines of context,
+then pipe results through delta for syntax-highlighted viewing.
+
+Arguments:
+  pattern       The regex pattern to search for
+  rg-options    Any additional options to pass to ripgrep
+
+Examples:
+  rg-delta handle
+  rg-delta 'def main'
+  rg-delta handle -t py
+  rg-delta 'TODO|FIXME' --glob '!node_modules'
+  rg-delta handle -C 5        # Override default context lines
+
+The default context is 2 lines (-C 2). Pass -C N to override.
+EOF
+}
+
+# Check for help flag
+if [[ "$1" == "help" || "$1" == "--help" || "$1" == "-h" ]]; then
+    show_help
+    exit 0
+fi
+
+if [[ -z "$1" ]]; then
+    show_help
+    exit 1
+fi
+
+# Check dependencies
+if ! command -v rg >/dev/null 2>&1; then
+    echo "Error: 'rg' (ripgrep) not found." >&2
+    exit 1
+fi
+
+if ! command -v delta >/dev/null 2>&1; then
+    echo "Error: 'delta' not found." >&2
+    exit 1
+fi
+
+pattern="$1"
+shift
+
+rg --json -C 2 "$pattern" "$@" | delta
