@@ -83,8 +83,8 @@
       "model": "amazon-bedrock/global.anthropic.claude-opus-4-6-v1",
       "tools": {
         "*": true,
-        "linear*": false,
-        "playwright*": false,
+        "linear*": true,
+        "playwright*": true,
       },
       "permission": {
         "kagi*": "ask",
