@@ -4,6 +4,7 @@
     "*": "allow",
     "web*": "ask",
     "kagi*": "ask",
+    "kagi_kagi_summarizer": "deny",
     "bash": {
       "*": "ask",
       "wc*": "allow",
