@@ -47,3 +47,4 @@ cask "xquartz"  # for v3cd
 brew "pandoc"
 tap "pantsbuild/tap"
 brew "git-delta"
+cask "dockdoor"
