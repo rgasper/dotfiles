@@ -134,6 +134,9 @@ unset key
 # User Configuration
 # ------------------
 
+#dummy anthropic api key so I can use headroom
+export ANTHROPIC_API_KEY="sk-ant-dummy"
+
 # openssl installed by brew. xcode-select not including them anymore? who knows.
 export LDFLAGS="-L$(brew --prefix openssl)/lib" 
 export CPPFLAGS="-I$(brew --prefix openssl)/include"
