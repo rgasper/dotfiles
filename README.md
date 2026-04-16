@@ -32,3 +32,7 @@ Terminal things I like:
 - [htmx](https://htmx.org/)
 - [oat](https://oat.ink/)
 - [wakaq](https://github.com/wakatime/wakaq)
+
+## opencode / headroom config
+- secrets in opencode manually filled and controlled
+- launch headroom separately - see [headroom-bedrock](https://github.com/rgasper/headroom-bedrock-wrapper)
