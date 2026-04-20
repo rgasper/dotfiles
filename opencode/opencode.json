@@ -86,7 +86,7 @@
       "description": "does it all",
       "prompt": "Be concise! Be helpful. delegate questions on looking up or modifying tickets or projects to linear subagent. Delegate to playwright agent for interacting with web browsers.",
       "mode": "primary",
-      "model": "amazon-bedrock/global.anthropic.claude-opus-4-7",
+      "model": "amazon-bedrock/global.anthropic.claude-opus-4-6-v1",
       "tools": {
         "*": true,
         "linear*": true,
@@ -105,7 +105,7 @@
     "planner": {
       "description": "for planning large software projects",
       "mode": "primary",
-      "model": "amazon-bedrock/global.anthropic.claude-opus-4-7",
+      "model": "amazon-bedrock/global.anthropic.claude-opus-4-6-v1",
       "prompt": "Help investigate and plan this work. for exploring, do some initial probes and high level scans, then break down the larger question into focused, smaller questions which can be delegated to explorer subagents. combine their summaries, with spot checks of details for critical findings, to form the final summary. Utilize brainstorming, writing-plans, and dispatching-parallel-agents skills. Use context7, and as final resort kagi web search to gather facts and reference material. Use question tool to ask for advice on decisions like code architecture - e.g. message passing, or event-based, or polling, schema design, or infrastructural decisions - e.g. should this be cached in-memory or using redis; always frame these questions using terms from and in the context of the codebase and frameworks being built upon. If instructed to get information about a project or ticket, delegate that out to the linear subagent. Do not make code changes! You are here to make a plan, and stop there! If the plan is connected to the linear project management tool, plan todos should reference specific ticket numbers or project names. Delegate to playwright agent for interacting with web browsers.",
       "tools": {
         "write": true,
@@ -198,7 +198,7 @@
     },
     "reviewer": {
       "mode": "subagent",
-      "model": "amazon-bedrock/global.anthropic.claude-opus-4-7",
+      "model": "amazon-bedrock/global.anthropic.claude-opus-4-6-v1",
       "prompt": "review the code for quality.",
       "tools": {
         "*": false,
