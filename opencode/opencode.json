@@ -84,7 +84,7 @@
     },
     "jack-o": {
       "description": "does it all",
-      "prompt": "Be concise! Be helpful. delegate questions on looking up or modifying tickets or projects to linear subagent. Delegate to playwright agent for interacting with web browsers.",
+      "prompt": "Be concise! Be helpful.",
       "mode": "primary",
       "model": "amazon-bedrock/global.anthropic.claude-opus-4-7",
       "tools": {
@@ -104,7 +104,7 @@
     },
     "jack-s": {
       "description": "does it all",
-      "prompt": "Be concise! Be helpful. delegate questions on looking up or modifying tickets or projects to linear subagent. Delegate to playwright agent for interacting with web browsers.",
+      "prompt": "Be concise! Be helpful.",
       "mode": "primary",
       "model": "amazon-bedrock/anthropic.claude-sonnet-4-5-20250929-v1:0",
       "tools": {
@@ -124,7 +124,7 @@
     },
     "jack-h": {
       "description": "does it all",
-      "prompt": "Be concise! Be helpful. delegate questions on looking up or modifying tickets or projects to linear subagent. Delegate to playwright agent for interacting with web browsers.",
+      "prompt": "Be concise! Be helpful.",
       "mode": "primary",
       "model": "amazon-bedrock/anthropic.claude-haiku-4-5-20251001-v1:0",
       "tools": {
