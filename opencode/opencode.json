@@ -82,63 +82,114 @@
     "explore": {
       "disable": true
     },
+    "linear-agent": {
+      "description": "Linear MCP specialist",
+      "prompt": "You are a specialist for Linear interactions. Handle all Linear-related tasks efficiently.",
+      "mode": "subagent",
+      "model": "amazon-bedrock/anthropic.claude-sonnet-4-6",
+      "tools": {
+        "linear*": true,
+      },
+      "permission": {
+        "read": "deny",
+        "write": "deny",
+        "bash": "deny",
+        "task": "deny",
+      }
+    },
+    "playwright-agent": {
+      "description": "Playwright browser automation specialist",
+      "prompt": "You are a specialist for Playwright browser automation. Handle all browser interaction tasks efficiently.",
+      "mode": "subagent",
+      "model": "amazon-bedrock/anthropic.claude-sonnet-4-6",
+      "tools": {
+        "playwright*": true,
+      },
+      "permission": {
+        "read": "deny",
+        "write": "deny",
+        "bash": "deny",
+        "task": "deny",
+      }
+    },
+    "enkodb-agent": {
+      "description": "EnkoDB database specialist",
+      "prompt": "You are a specialist for EnkoDB database operations. Handle all database queries and analysis tasks efficiently.",
+      "mode": "subagent",
+      "model": "amazon-bedrock/anthropic.claude-sonnet-4-6",
+      "tools": {
+        "enkodb*": true,
+      },
+      "permission": {
+        "read": "deny",
+        "write": "deny",
+        "bash": "deny",
+        "task": "deny",
+      }
+    },
     "jack-o": {
       "description": "does it all",
-      "prompt": "Be concise! Be helpful.",
+      "prompt": "Be concise! Be helpful.\n\nDelegation: For Linear, Playwright, and EnkoDB tasks, delegate to specialized subagents via the task tool instead of handling directly:\n- Use task with subagent_type \"linear\" for Linear operations\n- Use task with subagent_type \"playwright\" for browser automation\n- Use task with subagent_type \"enkodb\" for database queries\n\nProvide detailed context in your prompt to the subagent so it can complete the task autonomously.",
       "mode": "primary",
       "model": "amazon-bedrock/global.anthropic.claude-opus-4-7",
       "tools": {
         "*": true,
-        "linear*": true,
-        "playwright*": true,
       },
       "permission": {
         "kagi*": "ask",
         "webfetch*": "ask",
+        "linear*": "deny",
+        "playwright*": "deny",
+        "enkodb*": "deny",
         "task": {
           "*": "deny",
           "linear": "allow",
           "playwright": "allow",
+          "enkodb": "allow",
         }
       }
     },
     "jack-s": {
       "description": "does it all",
-      "prompt": "Be concise! Be helpful.",
+      "prompt": "Be concise! Be helpful.\n\nDelegation: For Linear, Playwright, and EnkoDB tasks, delegate to specialized subagents via the task tool instead of handling directly:\n- Use task with subagent_type \"linear\" for Linear operations\n- Use task with subagent_type \"playwright\" for browser automation\n- Use task with subagent_type \"enkodb\" for database queries\n\nProvide detailed context in your prompt to the subagent so it can complete the task autonomously.",
       "mode": "primary",
-      "model": "amazon-bedrock/anthropic.claude-sonnet-4-5-20250929-v1:0",
+      "model": "amazon-bedrock/anthropic.claude-sonnet-4-6",
       "tools": {
         "*": true,
-        "linear*": true,
-        "playwright*": true,
       },
       "permission": {
         "kagi*": "ask",
         "webfetch*": "ask",
+        "linear*": "deny",
+        "playwright*": "deny",
+        "enkodb*": "deny",
         "task": {
           "*": "deny",
           "linear": "allow",
           "playwright": "allow",
+          "enkodb": "allow",
         }
       }
     },
     "jack-h": {
       "description": "does it all",
-      "prompt": "Be concise! Be helpful.",
+      "prompt": "Be concise! Be helpful.\n\nDelegation: For Linear, Playwright, and EnkoDB tasks, delegate to specialized subagents via the task tool instead of handling directly:\n- Use task with subagent_type \"linear\" for Linear operations\n- Use task with subagent_type \"playwright\" for browser automation\n- Use task with subagent_type \"enkodb\" for database queries\n\nProvide detailed context in your prompt to the subagent so it can complete the task autonomously.",
       "mode": "primary",
       "model": "amazon-bedrock/anthropic.claude-haiku-4-5-20251001-v1:0",
       "tools": {
         "*": true,
-        "linear*": true,
-        "playwright*": true,
       },
       "permission": {
         "kagi*": "ask",
         "webfetch*": "ask",
+        "linear*": "deny",
+        "playwright*": "deny",
+        "enkodb*": "deny",
         "task": {
           "*": "deny",
           "linear": "allow",
           "playwright": "allow",
+          "enkodb": "allow",
         }
       }
     },
