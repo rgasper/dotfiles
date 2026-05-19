@@ -82,7 +82,7 @@
     "explore": {
       "disable": true
     },
-    "linear-agent": {
+    "linear": {
       "description": "Linear MCP specialist",
       "prompt": "You are a specialist for Linear interactions. Handle all Linear-related tasks efficiently.",
       "mode": "subagent",
@@ -97,7 +97,7 @@
         "task": "deny",
       }
     },
-    "playwright-agent": {
+    "playwright": {
       "description": "Playwright browser automation specialist",
       "prompt": "You are a specialist for Playwright browser automation. Handle all browser interaction tasks efficiently.",
       "mode": "subagent",
@@ -112,7 +112,7 @@
         "task": "deny",
       }
     },
-    "enkodb-agent": {
+    "enkodb": {
       "description": "EnkoDB database specialist",
       "prompt": "You are a specialist for EnkoDB database operations. Handle all database queries and analysis tasks efficiently.",
       "mode": "subagent",
