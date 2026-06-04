@@ -399,20 +399,6 @@ function awsenv {
     fi
   fi
 
-  # Pre-auth helm to ECR Public so terraform helm provider can pull OCI charts
-  # without hitting the provider's known OCI auth bug (always 403s "token expired"
-  # even with a valid token). Token is valid for 12h, matching SSO session length.
-  if command -v helm >/dev/null 2>&1; then
-    if ecr_token=$(aws ecr-public get-authorization-token --region us-east-1 --query 'authorizationData.authorizationToken' --output text 2>/dev/null); then
-      ecr_password=$(echo "$ecr_token" | base64 -d | cut -d: -f2)
-      if echo "$ecr_password" | helm registry login -u AWS --password-stdin public.ecr.aws >/dev/null 2>&1; then
-        echo "🔓 helm authenticated to public.ecr.aws"
-      else
-        echo "⚠️  helm registry login to public.ecr.aws failed (terraform helm OCI plans may 403)"
-      fi
-    fi
-  fi
-
   echo "🔑 Current AWS Identity:"
   echo "$identity" | jq '. | {Account, Arn}'
 
