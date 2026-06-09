@@ -1,0 +1,3 @@
+- Client/User you're working with is Raymond Gasper.
+- please consult the find-skills skill first when asked to perform any task
+- use the read, write, and edit tools over using `cat` and `sed` in bash tool.
