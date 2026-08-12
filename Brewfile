@@ -41,8 +41,6 @@ brew "rust"
 brew "lazygit"
 # brew "1password-cli"  # this doesn't work. dunno why. Just run `brew install 1password-cli`
 brew "glow"
-tap "anomalyco/tap"
-brew "anomalyco/tap/opencode"
 cask "xquartz"  # for v3cd
 brew "pandoc"
 tap "pantsbuild/tap"
